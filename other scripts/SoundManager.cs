@@ -24,6 +24,8 @@ public class SoundManager : MonoBehaviour
             sound.source.volume = sound.volume;
             sound.source.pitch = sound.pitch;
             sound.source.loop = sound.loop;
+            if (sound.name == "music")
+                sound.source.Play();
         }
     }
     public void Play(string name)
