@@ -20,6 +20,10 @@ public class LevelSelectingUIManager : MonoBehaviour
     }
     public void Play()
     {
+        if (levelSelectingSceneManager.targetLevelIndex == levelSelectingSceneManager.lastOpenedLevel)
+            DataSerialization.SaveData(true,"IsThisLastOpenedLevel");
+        else
+            DataSerialization.SaveData(false, "IsThisLastOpenedLevel");
         SceneManager.LoadScene(targetScene);
     }
     private void Update()
@@ -86,42 +90,4 @@ public class LevelSelectingUIManager : MonoBehaviour
         animator.SetBool("Go Right",false);
     }
 }
-
-/*
-  if (levelSelectingSceneManager.targetLevelIndex <= 2)
-        {
-            BackGroundPanelBB.gameObject.SetActive(false);
-            if (levelSelectingSceneManager.targetLevelIndex <= 1)
-                BackGroundPanelB.gameObject.SetActive(false);
-        } else if (levelSelectingSceneManager.targetLevelIndex == levelSelectingSceneManager.openedLevels.Count)
-        {
-            if (levelSelectingSceneManager.levels.Count == levelSelectingSceneManager.openedLevels.Count)
-            {
-                BackGroundPanelA.gameObject.SetActive(false);
-                BackGroundPanelAA.gameObject.SetActive(false);
-            }else if (levelSelectingSceneManager.levels.Count > levelSelectingSceneManager.openedLevels.Count)
-            {
-                BackGroundPanelA.sprite = LockedLevelSprite;
-                BackGroundPanelAA.sprite = LockedLevelSprite;
-                if (levelSelectingSceneManager.levels.Count - 1 == levelSelectingSceneManager.openedLevels.Count)
-                {
-                    BackGroundPanelAA.gameObject.SetActive(false);
-                }
-            }
-
-        }
-        if (levelSelectingSceneManager.targetLevelIndex > 1)
-        {
-            BackGroundPanelB.gameObject.SetActive(true);
-            if (levelSelectingSceneManager.targetLevelIndex > 2)
-                BackGroundPanelBB.gameObject.SetActive(true);
-        }
-        if (levelSelectingSceneManager.targetLevelIndex < levelSelectingSceneManager.levels.Count)
-        {
-            BackGroundPanelA.gameObject.SetActive(true);
-            if(levelSelectingSceneManager.targetLevelIndex < levelSelectingSceneManager.levels.Count - 1)
-                BackGroundPanelAA.gameObject.SetActive(true);
-
-      }
- */
 

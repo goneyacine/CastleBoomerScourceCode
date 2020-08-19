@@ -30,8 +30,9 @@ public class BulletManager : MonoBehaviour
     }
     private void OnDestroy()
     {
+        FindObjectOfType<SoundManager>().Play("bullet");
         //create bullet die effect
-        if(bullet.bulletDieEffect != null)
+        if (bullet.bulletDieEffect != null)
         {
             GameObject dieEffect = Instantiate(bullet.bulletDieEffect,transform.position,bullet.bulletDieEffect.transform.rotation);
           //  dieEffect.transform.localScale = transform.localScale;

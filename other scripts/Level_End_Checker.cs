@@ -7,6 +7,7 @@ public class Level_End_Checker : MonoBehaviour
 
     public CannonHeadBulletsManager bulletsManager;
     public Castle_Manager castle_Manager;
+    private Damage_ScoreUI_Mannager damage_ScoreUI_Mannager;
     public UnityEvent onEndLevel;
     public int finalScore;
     public int starsNum;
@@ -14,6 +15,11 @@ public class Level_End_Checker : MonoBehaviour
     private bool noThingIsMoving = true;
     //bullets array
     private GameObject[] bullets;
+    private bool done = false;
+    private void Start()
+    {
+        damage_ScoreUI_Mannager = FindObjectOfType<Damage_ScoreUI_Mannager>();
+    }
     void Update()
     {
         //find the bullets number
@@ -30,12 +36,16 @@ public class Level_End_Checker : MonoBehaviour
             }
          }
         bullets = GameObject.FindGameObjectsWithTag("Bullet");
-     
-        if ((castle_Manager.damagePercentage >= 99 || bulletsNumber == 0) && noThingIsMoving && bullets.Length == 0)
-            OnEndLevel();
+        if (!done)
+        {
+            if ((castle_Manager.damagePercentage >= 99 || bulletsNumber == 0) && noThingIsMoving && bullets.Length == 0)
+                OnEndLevel();
+        }
     }
     public void OnEndLevel()
     {
+        if (done)
+            return;
         finalScore = castle_Manager.damagePercentage;
         if (finalScore < 50)
             starsNum = 0;
@@ -46,5 +56,7 @@ public class Level_End_Checker : MonoBehaviour
         else
             starsNum = 3;
         onEndLevel.Invoke();
+        DataSerialization.SaveData((int)DataSerialization.GetObject("xp") + damage_ScoreUI_Mannager.score, "xp");
+        done = true;
     }
 }

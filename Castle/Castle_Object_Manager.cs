@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 [ExecuteInEditMode]
 public class Castle_Object_Manager : MonoBehaviour
 {
     
     public Castle_Object castle_Object;
     public float health;
+    public UnityEvent dieEvent;
+    public UnityEvent hitEvent;
     private void Start()
     {
         health = castle_Object.maxHealth;
@@ -34,11 +37,15 @@ public class Castle_Object_Manager : MonoBehaviour
     {
         //check if a bullet hit this object , if that happen then take damage
         if (collision.collider.tag == "Bullet")
+        {
             health -= collision.collider.GetComponent<BulletManager>().bullet.damage;
+        }
         else if (collision.collider.tag == "Lava")
             health = 0;
         if (GetComponent<Rigidbody2D>().velocity.y >= castle_Object.neededHitSpeed || GetComponent<Rigidbody2D>().velocity.x >= castle_Object.neededHitSpeed)
         {
+            if(collision.collider.tag != "tag")
+              FindObjectOfType<SoundManager>().Play("hit");
             health -= castle_Object.hitDamage;
             Castle_Object_Manager colliderCastleObjectManager = collision.collider.GetComponent<Castle_Object_Manager>();
             if (colliderCastleObjectManager != null &&
@@ -47,11 +54,16 @@ public class Castle_Object_Manager : MonoBehaviour
             {
                 colliderCastleObjectManager.health -= colliderCastleObjectManager.castle_Object.hitDamage;
             }
+
         }
+        
+        hitEvent.Invoke();
     }
     //the die method
     private void Die()
     {
+        FindObjectOfType<SoundManager>().Play("hit");
+        dieEvent.Invoke();
         //destroy the object
         Destroy(gameObject);
         //create die effects

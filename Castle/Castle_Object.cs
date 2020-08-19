@@ -5,6 +5,7 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Castle Object", menuName = "Castle/Castle Object")]
 public class Castle_Object : ScriptableObject
 {
+    public bool isRandomBox = false;
     public Sprite icon;
     public float price;
     public Vector2 scale;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using TMPro;
 public class Castle_Manager : MonoBehaviour
 {
     public List<Castle_Object> castle_Objects;
@@ -9,11 +9,23 @@ public class Castle_Manager : MonoBehaviour
     public float startSpace = 0;
     public float currentSpace;
     public int damagePercentage;
+    public int gold = 0;
+    public int money = 0;
+    public TMP_Text gameOverTotalGoldText;
+    public TMP_Text gameOverTotalMoneyText;
     private void Start()
     {
         UpdateCastleObjectList();
         foreach(Castle_Object CO in castle_Objects) {
-            startSpace += CO.space;
+            if (((bool)DataSerialization.GetObject("playerCurrentLevel") &&(bool)DataSerialization.GetObject("IsThisLastOpenedLevel"))
+                || (bool)DataSerialization.GetObject("IsThisLastOpenedLevel"))
+            {
+                startSpace += CO.space / 10;
+            }
+            else
+            {
+                startSpace += CO.space;
+            }
         }
         currentSpace = startSpace;
     }
@@ -24,11 +36,20 @@ public class Castle_Manager : MonoBehaviour
         currentSpace = 0;
         foreach (Castle_Object CO in castle_Objects)
         {
-            currentSpace += CO.space;
+            if (((bool)DataSerialization.GetObject("playerCurrentLevel")&& (bool) DataSerialization.GetObject("IsThisLastOpenedLevel") 
+                || (bool)DataSerialization.GetObject("IsThisLastOpenedLevel"))) {
+                currentSpace += CO.space / 10;
+            }
+            else
+            {
+                currentSpace += CO.space;
+            }
         }
         damagePercentage = (int)((startSpace - currentSpace) * 100 / (Mathf.Abs(startSpace) + 1));
         if (damagePercentage == 99)
             damagePercentage++;
+        gameOverTotalGoldText.text = "Gold : " + gold.ToString();
+        gameOverTotalMoneyText.text = "Money : " +  money.ToString();
     }
     private void UpdateCastleObjectList()
     {

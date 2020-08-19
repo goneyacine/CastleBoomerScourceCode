@@ -28,6 +28,17 @@ public class SoundManager : MonoBehaviour
                 sound.source.Play();
         }
     }
+    private void Update()
+    {
+        foreach(Sound sound in sounds)
+        {
+            if (sound.name == "music")
+                sound.source.volume = sound.volume * (float)DataSerialization.GetObject("music");
+            else
+                sound.source.volume = sound.volume * (float)DataSerialization.GetObject("sound");
+
+        }
+    }
     public void Play(string name)
     {
         bool sourceFounded = false;

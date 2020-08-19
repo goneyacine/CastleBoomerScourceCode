@@ -4,7 +4,7 @@ using TMPro;
 public class Damage_ScoreUI_Mannager : MonoBehaviour
 {
     public Castle_Manager castle_Manager;
-    private int score;
+    public int score;
     public Text ScoreText;
     public Text DamagePercentageText;
     public TMP_Text gameOverTotalXp;
