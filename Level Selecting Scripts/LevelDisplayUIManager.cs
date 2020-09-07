@@ -10,7 +10,7 @@ public class LevelDisplayUIManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateUI();
+       UpdateUI();
     }
     public void UpdateUI()
     {

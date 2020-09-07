@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using TMPro;
 public class Level_End_Checker : MonoBehaviour
 {
 
@@ -10,12 +11,12 @@ public class Level_End_Checker : MonoBehaviour
     private Damage_ScoreUI_Mannager damage_ScoreUI_Mannager;
     public UnityEvent onEndLevel;
     public int finalScore;
-    public int starsNum;
     //if it's true then nothing in castle is moving
     private bool noThingIsMoving = true;
     //bullets array
     private GameObject[] bullets;
     private bool done = false;
+    public TMP_Text loseOrWin;
     private void Start()
     {
         damage_ScoreUI_Mannager = FindObjectOfType<Damage_ScoreUI_Mannager>();
@@ -47,14 +48,16 @@ public class Level_End_Checker : MonoBehaviour
         if (done)
             return;
         finalScore = castle_Manager.damagePercentage;
-        if (finalScore < 50)
-            starsNum = 0;
-        else if (finalScore >= 50 && finalScore < 75)
-            starsNum = 1;
-        else if (finalScore >= 75 && finalScore < 99)
-            starsNum = 2;
+        if (finalScore >= 50)
+        {
+          if((int)DataSerialization.GetObject("selectedLevel") + 1 == (int)DataSerialization.GetObject("lastOpenedLevel"))
+          DataSerialization.SaveData((int)DataSerialization.GetObject("lastOpenedLevel") + 1, "lastOpenedLevel");
+            loseOrWin.text = "Win";
+        }
         else
-            starsNum = 3;
+        {
+            loseOrWin.text = "Lose";
+        }
         onEndLevel.Invoke();
         DataSerialization.SaveData((int)DataSerialization.GetObject("xp") + damage_ScoreUI_Mannager.score, "xp");
         done = true;

@@ -22,11 +22,18 @@ public class InitialDataLoader : MonoBehaviour
             DataSerialization.SaveData(false,"IsThisLastOpenedLevel");
             DataSerialization.SaveData(1.0f, "sound");
             DataSerialization.SaveData(1.0f, "music");
-            List<int> stars = new List<int>();
-            stars.Add(0);
-            DataSerialization.SaveData(stars, "singlePlayerStars");
             DataSerialization.SaveData(false, "playerCurrentLevel");
             DataSerialization.SaveData(0, "selectedLevel");
+            List<BulletData> openedBullets = new List<BulletData>();
+            openedBullets.Add(new BulletData("default bullet", 3));
+            DataSerialization.SaveData(openedBullets, "openedBullets");
+            List<BulletData> selectedBullets = new List<BulletData>();
+            selectedBullets.Add(new BulletData("default bullet", 2));
+            DataSerialization.SaveData(selectedBullets,"selectedBullets");
+            DataSerialization.SaveData("AAA", "default cannon base");
+            DataSerialization.SaveData("AAA", "default cannon muzzle base");
+            DataSerialization.SaveData("AAA", "default ammunition store");
+
         }
         setUpSettingPanelValues();
     }
@@ -35,5 +42,16 @@ public class InitialDataLoader : MonoBehaviour
         soundSlider.value = (float)DataSerialization.GetObject("sound");
         postProcessingSlider.value = (float)DataSerialization.GetObject("postProcessingValue");
         musicSlider.value = (float)DataSerialization.GetObject("music");
+    }
+}
+[System.Serializable]
+public class BulletData
+{
+    public string name;
+    public int number;
+    public BulletData(string name,int number)
+    {
+        this.name = name;
+        this.number = number;
     }
 }

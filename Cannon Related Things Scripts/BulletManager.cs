@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
-
+using System;
 public class BulletManager : MonoBehaviour
 {
     public Bullet bullet;
@@ -30,7 +30,13 @@ public class BulletManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        FindObjectOfType<SoundManager>().Play("bullet");
+        try
+        {
+            FindObjectOfType<SoundManager>().Play("bullet");
+        } catch (Exception e)
+        {
+            Debug.LogWarning(e);
+        }
         //create bullet die effect
         if (bullet.bulletDieEffect != null)
         {

@@ -12,10 +12,14 @@ public class LevelSelectingSceneManager : MonoBehaviour
     private void Start()
     {
        targetLevelIndex = (int)DataSerialization.GetObject("selectedLevel");
+        levelDisplayUIManager.targetLevelObject = levels[targetLevelIndex];
+        levelSelectingUIManager.targetScene = levels[targetLevelIndex].sceneName;
     }
     private void Update()
     {
         lastOpenedLevel = (int)DataSerialization.GetObject("lastOpenedLevel");
+        if (lastOpenedLevel > levels.Count)
+            lastOpenedLevel = levels.Count;
         //refresh the opened levels list
         openedLevels = new List<LevelObject>();
         for (int i = 0; i < lastOpenedLevel; i++)
