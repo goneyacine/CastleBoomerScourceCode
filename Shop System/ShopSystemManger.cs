@@ -5,9 +5,7 @@ public class ShopSystemManger : MonoBehaviour
 {
     private ShopUIManager shopUIManager;
     public List<ShopItem> bulletsShopItems;
-    public List<ShopItem> cannonBaseShopItems;
-    public List<ShopItem> cannonMuzzelShopItems;
-    public List<ShopItem> ammunitionStoreShopItems;
+    public List<ShopItem> cannonShopItems;
     private List<List<ShopItem>> shopItemsListsList = new List<List<ShopItem>>();
     public int shopItemsListIndex = 0;
 
@@ -15,9 +13,7 @@ public class ShopSystemManger : MonoBehaviour
     {
         shopUIManager = gameObject.GetComponent<ShopUIManager>();
         shopItemsListsList.Add(bulletsShopItems);
-        shopItemsListsList.Add(cannonBaseShopItems);
-        shopItemsListsList.Add(cannonMuzzelShopItems);
-        shopItemsListsList.Add(ammunitionStoreShopItems);
+        shopItemsListsList.Add(cannonShopItems);
     }
 
     private void Update()

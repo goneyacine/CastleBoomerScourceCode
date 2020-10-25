@@ -15,7 +15,7 @@ public class ShootingProjectileMotionManager : MonoBehaviour
         //set the start position vector2 for the target projectile motion object to the postion of this transform
         projectileMotion.startPosition = transform.position;
         //set the start angle of projectile motion obj to the angle of the cannon
-        projectileMotion.startAngle = cannonHead.transform.eulerAngles.z;
+        projectileMotion.startAngle = cannonHead.transform.eulerAngles.z - 90;
         //check if the player is clicking the left mouse button ,so is doing that then invoke onClickingLeftMouseButton and when the player release the mouse button then invoke  onReleasingLeftMouseButton
         if (Input.GetMouseButton(1) || Input.GetMouseButton(0))
         {

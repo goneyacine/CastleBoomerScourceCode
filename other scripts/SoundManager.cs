@@ -28,7 +28,7 @@ public class SoundManager : MonoBehaviour
                 sound.source.Play();
         }
     }
-    private void Update()
+    public void UpdateSoundsVolume()
     {
         foreach(Sound sound in sounds)
         {

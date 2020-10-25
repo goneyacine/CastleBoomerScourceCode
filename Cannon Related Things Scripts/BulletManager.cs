@@ -22,6 +22,12 @@ public class BulletManager : MonoBehaviour
         //set other values
         time = Time.time;
         deadTime = Time.time  + bullet.lifeTime;
+        //adding line renderer and partical system componets if they are not null
+        if (bullet.particleSystem != null)
+        {
+            ParticleSystem particalSystem = bullet.particleSystem;
+            gameObject.AddComponent<ParticleSystem>();
+        }
     }
     private void OnEnable()
     {

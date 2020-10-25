@@ -17,9 +17,6 @@ public class CannonHead : ScriptableObject
     public float MaxSpace;
     //the local position of the cannon head
     public Vector2 localPos;
-    //the min and max angle
-    public float minAngle;
-    public float maxAngle;
     public Color color;
    
 }

@@ -8,9 +8,11 @@ public class postProcessingValueM : MonoBehaviour
     private void Start()
     {
         postProcessVolume = GetComponent<PostProcessVolume>();
+        UpdateVolume();
     }
-    private void Update()
+    public void UpdateVolume()
     {
         postProcessVolume.weight = (float)DataSerialization.GetObject("postProcessingValue");
     }
+    //adding more optimizations and work on update ui elements
 }

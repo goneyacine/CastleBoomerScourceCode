@@ -48,8 +48,8 @@ public class BasicShooting : Shoot
             GameObject newBullet = Instantiate(bulletPrefab, cannonHeadManager.transform.Find("Cannon Shooter").Find("Shooting Point").transform.position, Quaternion.identity);
             newBullet.GetComponent<BulletManager>().bullet = bullet;
             //add speed to the bullet
-            newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(cannonHeadManager.transform.localEulerAngles.z * Mathf.Deg2Rad),
-                Mathf.Sin(cannonHeadManager.transform.localEulerAngles.z * Mathf.Deg2Rad)) * finalVelocity;
+            newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos((cannonHeadManager.transform.localEulerAngles.z-90) * Mathf.Deg2Rad),
+                Mathf.Sin((cannonHeadManager.transform.localEulerAngles.z -90) * Mathf.Deg2Rad)) * finalVelocity;
             cannonHeadBulletsManager.bulletsNumbers[cannonHeadBulletsManager.bullets.IndexOf(bullet)]--;
 
         }

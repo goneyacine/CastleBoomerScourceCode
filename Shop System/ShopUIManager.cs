@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 using TMPro;
-public class ShopUIManager : MonoBehaviour
+
+public class ShopUIManager : MonoBehaviour  
 {
     public ShopItemUI shopItemUI_A;
     public ShopItemUI shopItemUI_B;
     public ShopItemUI shopItemUI_C;
     public List<ShopItem> shopItems;
     public int currentShopItemIndex = 0;
-
+    public Color defaultButtonsColor;
     private void Update()
     {
         //check when we should disable or enable "shopItemUI_A" parent object
@@ -160,18 +161,22 @@ public class ShopUIManager : MonoBehaviour
             targetItemUI = shopItemUI_C;
         if(targetItemUI.shopItem.price > currentMoney)
         {
-            ColorBlock cb = targetItemUI.buyButton.colors;
-            Color color = cb.normalColor;
-            cb.normalColor = Color.red;
-            targetItemUI.buyButton.colors = cb;
-            System.Threading.Thread.Sleep(2000);
-            cb.normalColor = color;
-            targetItemUI.buyButton.colors = cb;
-
+            Image image = targetItemUI.buyButton.gameObject.GetComponent<Image>();
+            Color defaultColor = image.color;
+            image.color = Color.red;
+            System.Threading.Thread.Sleep(800);
+            image.color = defaultColor;
         }
         else
         {
-            //i realy love my game even if it's stupid
+            int newMoneyValue = currentMoney - targetItemUI.shopItem.price;
+            DataSerialization.SaveData(newMoneyValue, "money");
+            Image image = targetItemUI.buyButton.gameObject.GetComponent<Image>();
+            Color defaultColor = image.color;
+            image.color = Color.green;
+            System.Threading.Thread.Sleep(800);
+            image.color = defaultColor;
+            FindObjectOfType<MainMenuUiManager>().UpdateUI();
             if (targetItemUI.shopItem.tag == "Bullet")
             {
                 List<BulletData> bulletsData = new List<BulletData>();
@@ -186,7 +191,9 @@ public class ShopUIManager : MonoBehaviour
                     if (bd.name == targetItemUI.shopItem.name)
                     {
                         targetBulletData = bd;
+                        int oldNumber = bd.number; 
                         bd.number++;
+                        Debug.Log("Old Number Is : " + oldNumber + "/// New Number Is : " + bd.number);
                         break;
                     }
                 }
@@ -205,6 +212,41 @@ public class ShopUIManager : MonoBehaviour
         }
 
 
+    }
+    public void SelectCannon(int targetItemUI) 
+    {
+        String cannonName = "Cannon";
+        switch (targetItemUI)
+        {
+            case 1:
+                try
+                {
+                    cannonName = shopItemUI_A.shopItem.name;
+                }catch(Exception e) { }
+                shopItemUI_A.buyButton.gameObject.GetComponent<Image>().color = Color.green;
+                shopItemUI_B.buyButton.gameObject.GetComponent<Image>().color = defaultButtonsColor;
+                shopItemUI_C.buyButton.gameObject.GetComponent<Image>().color = defaultButtonsColor;
+                break;
+            case 2:
+                try
+                {
+                    cannonName = shopItemUI_B.shopItem.name;
+                }catch(Exception e) { }
+                shopItemUI_A.buyButton.gameObject.GetComponent<Image>().color = defaultButtonsColor;
+                shopItemUI_B.buyButton.gameObject.GetComponent<Image>().color = Color.green;
+                shopItemUI_C.buyButton.gameObject.GetComponent<Image>().color = defaultButtonsColor;
+                break;
+            case 3:
+                try
+                {
+                    cannonName = shopItemUI_C.shopItem.name;
+                }catch(Exception e) { }
+                shopItemUI_A.buyButton.gameObject.GetComponent<Image>().color = defaultButtonsColor;
+                shopItemUI_B.buyButton.gameObject.GetComponent<Image>().color = defaultButtonsColor;
+                shopItemUI_C.buyButton.gameObject.GetComponent<Image>().color = Color.green ;
+                break;
+        }
+        DataSerialization.SaveData(cannonName,"Cannon");
     }
 }
 [System.Serializable]

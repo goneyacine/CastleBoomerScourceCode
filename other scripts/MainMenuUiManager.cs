@@ -11,7 +11,11 @@ public class MainMenuUiManager : MonoBehaviour
     public Text money;
     public Text lv;
     public TMP_Text profileLV;
-    private void Update()
+    private void Start()
+    {
+        UpdateUI();
+    }
+    public void UpdateUI()
     {
         lv.text = "LV " + ((int)DataSerialization.GetObject("LV")).ToString();
         profileLV.text = ((int)DataSerialization.GetObject("LV")).ToString();

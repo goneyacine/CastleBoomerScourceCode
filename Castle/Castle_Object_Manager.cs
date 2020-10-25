@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 [ExecuteInEditMode]
 public class Castle_Object_Manager : MonoBehaviour
 {
@@ -10,21 +11,27 @@ public class Castle_Object_Manager : MonoBehaviour
     public float health;
     public UnityEvent dieEvent;
     public UnityEvent hitEvent;
+    private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider2D;
+    private Rigidbody2D rb;
     private void Start()
     {
         health = castle_Object.maxHealth;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
         //set the texture of the castle object 
-        GetComponent<SpriteRenderer>().sprite = castle_Object.texture;
+        spriteRenderer.sprite = castle_Object.texture;
         //set the color of the castle object
-        GetComponent<SpriteRenderer>().color = castle_Object.color;
+        spriteRenderer.color = castle_Object.color;
         //set the scale
         transform.localScale = castle_Object.scale;
         //set the size of the box collider 
-        GetComponent<BoxCollider2D>().size = castle_Object.boxColliderScale;
+        boxCollider2D.size = castle_Object.boxColliderScale;
         //calling "onAlive" unity event
         castle_Object.onAlive.Invoke();
         //check if the object is still alive if not then die
@@ -40,17 +47,22 @@ public class Castle_Object_Manager : MonoBehaviour
         {
             health -= collision.collider.GetComponent<BulletManager>().bullet.damage;
         }
-        else if (collision.collider.tag == "Lava")
-            health = 0;
-        if (GetComponent<Rigidbody2D>().velocity.y >= castle_Object.neededHitSpeed || GetComponent<Rigidbody2D>().velocity.x >= castle_Object.neededHitSpeed)
+       
+        if (rb.velocity.y >= castle_Object.neededHitSpeed || rb.velocity.x >= castle_Object.neededHitSpeed)
         {
-            if(collision.collider.tag != "tag")
-              FindObjectOfType<SoundManager>().Play("hit");
+            if (collision.collider.tag != "Bullet" || collision.collider.tag != "TNT_Range")
+            {
+                try
+                {
+                    FindObjectOfType<SoundManager>().Play("hit");
+                }
+                catch (Exception e) { }
+            }
             health -= castle_Object.hitDamage;
             Castle_Object_Manager colliderCastleObjectManager = collision.collider.GetComponent<Castle_Object_Manager>();
             if (colliderCastleObjectManager != null &&
-            (colliderCastleObjectManager.castle_Object.neededHitSpeed <= GetComponent<Rigidbody2D>().velocity.y ||
-             colliderCastleObjectManager.castle_Object.neededHitSpeed <= GetComponent<Rigidbody2D>().velocity.x))
+            (colliderCastleObjectManager.castle_Object.neededHitSpeed <= rb.velocity.y ||
+             colliderCastleObjectManager.castle_Object.neededHitSpeed <= rb.velocity.x))
             {
                 colliderCastleObjectManager.health -= colliderCastleObjectManager.castle_Object.hitDamage;
             }
@@ -59,19 +71,28 @@ public class Castle_Object_Manager : MonoBehaviour
         
         hitEvent.Invoke();
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "TNT_Range")
+        {
+            health = 0;
+        }
+    }
     //the die method
     private void Die()
     {
-        FindObjectOfType<SoundManager>().Play("hit");
+        try
+        {
+            FindObjectOfType<SoundManager>().Play("hit");
+        }catch(Exception e) { }
         dieEvent.Invoke();
-        //destroy the object
-        Destroy(gameObject);
         //create die effects
         if(castle_Object.dieEffect != null)
         {
             GameObject dieEffect = Instantiate(castle_Object.dieEffect, transform.position, castle_Object.dieEffect.transform.rotation);
             Destroy(dieEffect, 5f);
         }
+        Destroy(gameObject);
     }
     private void OnEnable()
     {
@@ -80,5 +101,9 @@ public class Castle_Object_Manager : MonoBehaviour
     private void OnDestroy()
     {
         castle_Object.onDestroy.Invoke();
+        try
+        {
+            FindObjectOfType<Castle_Manager>().UpdateData();
+        }catch(Exception e) { }
     }
 }

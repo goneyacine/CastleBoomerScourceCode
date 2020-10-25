@@ -12,7 +12,5 @@ public class CannonHeadManager : MonoBehaviour
         targetObj.transform.localScale = cannonHead.scale;
         targetObj.GetComponent<SpriteRenderer>().sprite = cannonHead.texture;
         targetObj.GetComponent<SpriteRenderer>().color = cannonHead.color;
-        gameObject.GetComponent<LookAtMouse>().minAngle = cannonHead.minAngle;
-        gameObject.GetComponent<LookAtMouse>().maxAngle = cannonHead.maxAngle;
     }
 }

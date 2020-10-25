@@ -29,10 +29,7 @@ public class InitialDataLoader : MonoBehaviour
             DataSerialization.SaveData(openedBullets, "openedBullets");
             List<BulletData> selectedBullets = new List<BulletData>();
             selectedBullets.Add(new BulletData("default bullet", 2));
-            DataSerialization.SaveData(selectedBullets,"selectedBullets");
-            DataSerialization.SaveData("AAA", "default cannon base");
-            DataSerialization.SaveData("AAA", "default cannon muzzle base");
-            DataSerialization.SaveData("AAA", "default ammunition store");
+            DataSerialization.SaveData(selectedBullets, "selectedBullets");
 
         }
         setUpSettingPanelValues();

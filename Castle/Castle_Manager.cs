@@ -13,12 +13,18 @@ public class Castle_Manager : MonoBehaviour
     public int money = 0;
     public TMP_Text gameOverTotalGoldText;
     public TMP_Text gameOverTotalMoneyText;
+    private bool isThisLastOpenedLevel;
     private void Start()
     {
+        StartCoroutine("StartFunction");   
+    }
+    IEnumerator StartFunction()
+    {
+        isThisLastOpenedLevel = (bool)DataSerialization.GetObject("IsThisLastOpenedLevel");
         UpdateCastleObjectList();
-        foreach(Castle_Object CO in castle_Objects) {
-            if (((bool)DataSerialization.GetObject("playerCurrentLevel") &&(bool)DataSerialization.GetObject("IsThisLastOpenedLevel"))
-                || (bool)DataSerialization.GetObject("IsThisLastOpenedLevel"))
+        foreach (Castle_Object CO in castle_Objects)
+        {
+            if (isThisLastOpenedLevel)
             {
                 startSpace += CO.space / 10;
             }
@@ -28,16 +34,16 @@ public class Castle_Manager : MonoBehaviour
             }
         }
         currentSpace = startSpace;
+        UpdateData();
+        yield return null;
     }
-
-    private void Update()
+    public void UpdateData()
     {
         UpdateCastleObjectList();
         currentSpace = 0;
         foreach (Castle_Object CO in castle_Objects)
         {
-            if (((bool)DataSerialization.GetObject("playerCurrentLevel")&& (bool) DataSerialization.GetObject("IsThisLastOpenedLevel") 
-                || (bool)DataSerialization.GetObject("IsThisLastOpenedLevel"))) {
+            if (isThisLastOpenedLevel) {
                 currentSpace += CO.space / 10;
             }
             else

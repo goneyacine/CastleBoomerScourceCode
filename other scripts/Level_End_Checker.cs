@@ -40,7 +40,7 @@ public class Level_End_Checker : MonoBehaviour
         if (!done)
         {
             if ((castle_Manager.damagePercentage >= 99 || bulletsNumber == 0) && noThingIsMoving && bullets.Length == 0)
-                OnEndLevel();
+                Invoke("OnEndLevel", 2f);
         }
     }
     public void OnEndLevel()

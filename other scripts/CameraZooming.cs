@@ -4,14 +4,16 @@ using UnityEngine;
 public class CameraZooming : MonoBehaviour
 {
     //so this list contains sorted values of right mouse button and zooming out value of this time
-    //NOTE : x value is the time ,and y value is the zooming out value
-    public List<Vector2> ClickingTime_ZoomingValue;
+    //NOTE : x value is the time , y value is the zooming out value and the z value is the y position
+    public List<Vector3> ClickingTime_ZoomingValue;
     //the the time when the player clicks the right mouse button, if the right mouse button is relased the value will be -1
     private float time = 0f;
     //the size camera must have
     private float camSize;
     //the default camera size
     public float defaultCamSize;
+    //the default y positon of the camera
+    public float defaultYpos;
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -27,12 +29,15 @@ public class CameraZooming : MonoBehaviour
                 {
 
                     camSize = ClickingTime_ZoomingValue[i].y;
+                    transform.position = new Vector3(transform.position.x, Vector2.Lerp(Vector2.up * transform.position.y, Vector2.up * ClickingTime_ZoomingValue[i].z,.125f).y, transform.position.z);
 
                 }
                 else if (i + 1 >= ClickingTime_ZoomingValue.Count && ClickingTime_ZoomingValue[i].x <= ThisTime)
                 {
 
                     camSize = ClickingTime_ZoomingValue[i].y;
+                    transform.position = new Vector3(transform.position.x, Vector2.Lerp(Vector2.up * transform.position.y, Vector2.up * ClickingTime_ZoomingValue[i].z, .125f).y, transform.position.z);
+
 
                 }
 
@@ -43,6 +48,7 @@ public class CameraZooming : MonoBehaviour
         {
 
             camSize = defaultCamSize;
+            transform.position = new Vector3(transform.position.x, Vector2.Lerp(Vector2.up*transform.position.y,Vector2.up * defaultYpos,.125f).y, transform.position.z);
 
         }
 
