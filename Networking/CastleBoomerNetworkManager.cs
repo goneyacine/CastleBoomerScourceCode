@@ -6,6 +6,11 @@ using UnityEngine.UI;
 using Mirror;
 public class CastleBoomerNetworkManager : NetworkManager
 {
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+    //when the player open the 1v1/join window start host
     private void OnEnable()
     {
         StartHost();
@@ -13,8 +18,10 @@ public class CastleBoomerNetworkManager : NetworkManager
     }
     public void Join()
     {
+        //stoping the host to join the target host 
         StopHost();
         Debug.Log("Host Stoped");
+        //trying to connect to the target player host 
         try
         {
             networkAddress = ID_Generator.ID_to_IP(enterPlayerID.text);
