@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +8,6 @@ public class LookAtMouse : MonoBehaviour
 
     private void Update()
     {
-
         //find the world position of the mouse
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //trun the position of tran var to vector2

@@ -33,6 +33,7 @@ public class Castle_Object_Manager : MonoBehaviour
         //set the size of the box collider 
         boxCollider2D.size = castle_Object.boxColliderScale;
         //calling "onAlive" unity event
+        if(castle_Object.onAlive != null)
         castle_Object.onAlive.Invoke();
         //check if the object is still alive if not then die
         if(health <= 0)
@@ -96,10 +97,12 @@ public class Castle_Object_Manager : MonoBehaviour
     }
     private void OnEnable()
     {
+        if(castle_Object.onCreate != null)
         castle_Object.onCreate.Invoke();
     }
     private void OnDestroy()
     {
+        if(castle_Object.onDestroy != null)
         castle_Object.onDestroy.Invoke();
         try
         {
