@@ -1,11 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class EditorManager : MonoBehaviour
 {
-  //updating the free space text
-  public void UpdateFreeSpaceText(){freeSpaceText.text = "Free Space : " + (maxSpace - currentUsedSpacet).toString();}
+    //updating the free space text
+  public void UpdateFreeSpaceText(){freeSpaceText.text = "Free Space : " + (maxSpace - currentUsedSpace).ToString();}
   //setting something
   public void SetEditorMode(int editorMode){this.editorMode = editorMode;}
   public void SetSelectedEditorObject(Building SelectedEditorObject){

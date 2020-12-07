@@ -11,16 +11,17 @@ public class CastleBoomerNetworkManager : NetworkManager
         DontDestroyOnLoad(gameObject);
     }
     //when the player open the 1v1/join window start host
-    private void OnEnable()
+    public void Be_A_Host()
     {
         StartHost();
         Debug.Log("Host Started");
     }
-    public void Join()
-    {
-        //stoping the host to join the target host 
+    public void Dont_Be_A_Host(){
         StopHost();
         Debug.Log("Host Stoped");
+    }
+    public void Join()
+    {
         //trying to connect to the target player host 
         try
         {
@@ -31,9 +32,7 @@ public class CastleBoomerNetworkManager : NetworkManager
         catch (Exception e)
         {
             Debug.LogError(e);
-            StartHost();
             Debug.Log("Failed To Join With Target Player");
-            Debug.Log("Host Started Again");
         }
     }
     public InputField enterPlayerID;

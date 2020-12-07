@@ -8,8 +8,11 @@ public class Building : MonoBehaviour
     {
     editorManager = FindObjectOfType<EditorManager>();
     float myCastleObjectSpace = gameObject.GetComponent<Castle_Object_Manager>().castle_Object.space;
-    if(editorManager.currentUsedSpace + myCastleObjectSpace <= editorManager.maxSpace)
+    if(editorManager.currentUsedSpace + myCastleObjectSpace <= editorManager.maxSpace){
     editorManager.currentUsedSpace += myCastleObjectSpace;
+    hadFreeSpace = true;
+    editorManager.UpdateFreeSpaceText();
+    }
     else 
         Destroy(gameObject);
     }
@@ -77,8 +80,9 @@ public class Building : MonoBehaviour
     if(hadFreeSpace){
     editorManager.currentUsedSpace -= gameObject.GetComponent<Castle_Object_Manager>().castle_Object.space;
     Debug.Log(" << Editor Object Destroyed >> ");
+    editorManager.UpdateFreeSpaceText();
     }
-    }
+}
 
 	public bool canTransform;
 	public bool canRotate;
