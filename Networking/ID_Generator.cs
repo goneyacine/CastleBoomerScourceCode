@@ -23,7 +23,6 @@ using UnityEngine.UI;
         {
             char c = id[i];
             char newChar  = '1';
-            //'A', 'Q', 'z', 'P', 'm', 'e', '_', 'I','o','V'
             switch (c)
             {
                 case '.':
@@ -82,7 +81,6 @@ using UnityEngine.UI;
         {
             char c = ip[i];
             char newChar = 'A';
-            //'A', 'Q', 'z', 'P', 'm', 'e', '_', 'I','o','V'
             switch (c)
             {
                 case '0':
