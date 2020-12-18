@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Mirror;
 using System;
@@ -7,40 +7,90 @@ using UnityEngine.SceneManagement;
 
 public class PlayerNetworkManager : NetworkBehaviour
 { 
-    private void Start()
-    {
-     PlayingGameObjects = GameObject.FindWithTag("Hey");
-     
-     Test = GameObject.FindWithTag("Test");
-    }
-    public void OnConnectedToServer()
-    {
-        //when a client join the server we check if the server is full or no
-        if (!isClientOnly) { return; }
-        //if no send confirmation request to the server (host)
-        CmdJoinConfirmation();
-    }
-    //we call this commad when a client want to join the server and play with you
-    [Command]
-    public void CmdJoinConfirmation()
-    {
-        if (!isClientOnly)
-        {
-            Debug.Log("Other Conected To You , Now You Can Play Togther");
-            Test.SetActive(false);
-            PlayingGameObjects.SetActive(true);
-            LoadPlayingScene();
-        }
-    }
-    //when two players join the game load the gameplay scene and this is the need function
-    [ClientRpc]
-    public void LoadPlayingScene()
-    {
-        if (!isClientOnly) { return; }
-        Test.SetActive(false);
-        PlayingGameObjects.SetActive(true);
+   private void Update(){
+    //if the game doesn't start yet 
+    if(gameStarted == false){
+      //we check if we can start the game if all the maps are saved
+    if(isServer && castleSentFromHostToClient && castleSentFromClientToHost){
+      oneVoneVarManager.OneVoneVarManager.mapEditor.SetActive(false);
+      oneVoneVarManager.OneVoneVarManager.gameplayWindowObject.SetActive(true);
+      RpcStartGameOnClient();
+      gameStarted = true;
     }
 
-    private GameObject PlayingGameObjects;
-    private GameObject Test;
+    //if the user pressed space and his map is not saved we save the map
+    if(Input.GetKeyDown(KeyCode.Space) && !mapSaved){
+     SaveCastle(oneVoneVarManager.OneVoneVarManager.myCastle);
+     if(isServer)
+     castleSentFromHostToClient = true;
+     mapSaved = true;
+    }
+   }
+  }
+  //here when the second player join the game we try to enable the map editor on player 1 and 2 devices
+   public override void OnStartClient(){
+    base.OnStartClient();
+    if(isServer)
+    return;
+  try{
+   oneVoneVarManager.OneVoneVarManager.mapEditor.SetActive(true);
+   oneVoneVarManager.OneVoneVarManager.oneVoneChoice.SetActive(false);
+  CmdStartMapEditor();
+  }catch(Exception e){
+    oneVoneVarManager.OneVoneVarManager.errorPanel.SetActive(true);
+    oneVoneVarManager.OneVoneVarManager.errorContent.text = e.ToString();
+  }
+    }
+    //this command starts the map editor on the host only
+   [Command]
+   void CmdStartMapEditor(){
+    if(!isServer)
+       return;
+    try{
+    oneVoneVarManager.OneVoneVarManager.mapEditor.SetActive(true);
+    oneVoneVarManager.OneVoneVarManager.oneVoneChoice.SetActive(false);
+    }catch(Exception e){
+    oneVoneVarManager.OneVoneVarManager.errorPanel.SetActive(true);
+    oneVoneVarManager.OneVoneVarManager.errorContent.text = e.ToString();
+  }
 }
+ //we call this function when one of the two player press space to save the map and continue
+  public void SaveCastle(GameObject castleParent){
+    if(!isServer){
+      CmdSendCastleFromClientToHost(castleParent);
+    }else{
+      RpcSendCastleFromHostToClient(castleParent);
+    }
+   }
+   //we call this commad on client (onlyClient not a host) to send his map to the host
+   [Command]
+   void CmdSendCastleFromClientToHost(GameObject castleParent){
+   if(!isServer)
+    return;
+    oneVoneVarManager.OneVoneVarManager.castleParent = castleParent;
+    castleSentFromClientToHost = true;
+    Debug.Log("castle sent from client to host");
+   }
+   //we call this ClientRpc on the host to his map to client(onlyClient)
+   [ClientRpc]
+   void RpcSendCastleFromHostToClient(GameObject castleParent){
+    if(isServer)
+     return;
+   oneVoneVarManager.OneVoneVarManager.castleParent = castleParent;    
+   Debug.Log("castle sent from host to client"); 
+   }
+   //this clientRpc is to enable the gameplay tools on the client
+   [ClientRpc]
+   void RpcStartGameOnClient(){
+    if(isServer)
+    return;
+     oneVoneVarManager.OneVoneVarManager.mapEditor.SetActive(false);
+     oneVoneVarManager.OneVoneVarManager.gameplayWindowObject.SetActive(true);
+   }
+   private bool castleSentFromClientToHost = false;
+   private bool castleSentFromHostToClient = false;
+   private bool mapSaved = false;
+   private bool gameStarted = false;
+
+  }
+

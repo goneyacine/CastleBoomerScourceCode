@@ -26,6 +26,9 @@ using UnityEngine.UI;
             //'A', 'Q', 'z', 'P', 'm', 'e', '_', 'I','o','V'
             switch (c)
             {
+                case '.':
+                newChar = '0';
+                break;
                 case 'A':
                     newChar = '1';
                     break;
@@ -34,11 +37,11 @@ using UnityEngine.UI;
                     newChar = '2';
                     break;
 
-                case 'z':
+                case 'x':
                     newChar = '3';
                     break;
 
-                case 'P':
+                case '3':
                     newChar = '4';
                     break;
 
@@ -53,15 +56,15 @@ using UnityEngine.UI;
                     newChar = '7';
                     break;
 
-                case 'I':
+                case 'i':
                     newChar = '8';
                     break;
 
-                case 'o':
+                case '7':
                     newChar = '9';
                     break;
 
-                case 'V':
+                case '9':
                     newChar = '.';
                     break;
             }
@@ -72,6 +75,7 @@ using UnityEngine.UI;
     //from ip adress to an id
     public static string IP_to_ID(string ip)
     {
+        Debug.Log(ip);
         if (ip == null || ip == "") { return null; }
         string id = "";
         for (int i = 0; i < ip.Length; i++)
@@ -81,6 +85,9 @@ using UnityEngine.UI;
             //'A', 'Q', 'z', 'P', 'm', 'e', '_', 'I','o','V'
             switch (c)
             {
+                case '0':
+                newChar = '.';
+                break;
                 case '1':
                     newChar = 'A';
                     break;
@@ -90,11 +97,11 @@ using UnityEngine.UI;
                     break;
 
                 case '3':
-                    newChar = 'z';
+                    newChar = 'x';
                     break;
 
                 case '4':
-                    newChar = 'P';
+                    newChar = '3';
                     break;
 
                 case '5':
@@ -109,15 +116,15 @@ using UnityEngine.UI;
                     break;
 
                 case '8':
-                    newChar = 'I';
+                    newChar = 'i';
                     break;
 
                 case '9':
-                    newChar = 'o';
+                    newChar = '7';
                     break;
 
                 case '.':
-                    newChar = 'V';
+                    newChar = '9';
                     break;
             }
             id = id + newChar;

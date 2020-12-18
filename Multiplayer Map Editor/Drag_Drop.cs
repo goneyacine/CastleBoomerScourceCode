@@ -15,7 +15,7 @@ public class Drag_Drop : MonoBehaviour
     public void InitEditorObject()
     {
 
-    	GameObject newEditorObject = Instantiate(editorObjectPrefab,editorObjectStartPosition.position,Quaternion.identity);
+    	GameObject newEditorObject = Instantiate(editorObjectPrefab,editorObjectStartPosition.position,Quaternion.identity,castleObjParent);
     	newEditorObject.GetComponent<Castle_Object_Manager>().castle_Object = castleObject;
 
     }
@@ -31,4 +31,5 @@ public class Drag_Drop : MonoBehaviour
 	public Castle_Object castleObject;
 	public Image icon;
 	public Transform editorObjectStartPosition;
+    public Transform castleObjParent;
 }
