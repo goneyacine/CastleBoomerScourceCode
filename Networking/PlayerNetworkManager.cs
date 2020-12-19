@@ -12,6 +12,7 @@ public class PlayerNetworkManager : NetworkBehaviour
     if(gameStarted == false){
       //we check if we can start the game if all the maps are saved
     if(isServer && castleSentFromHostToClient && castleSentFromClientToHost){
+      MapStarter.mapStarter.SetUpMap();
       oneVoneVarManager.OneVoneVarManager.mapEditor.SetActive(false);
       oneVoneVarManager.OneVoneVarManager.gameplayWindowObject.SetActive(true);
       RpcStartGameOnClient();
@@ -56,27 +57,39 @@ public class PlayerNetworkManager : NetworkBehaviour
 }
  //we call this function when one of the two player press space to save the map and continue
   public void SaveCastle(GameObject castleParent){
+    List<Vector3> positions = new List<Vector3>();
+    List<string> names = new List<string>();
+    List<float> zRotations = new List<float>();
+    foreach (Transform editorTransform in castleParent.transform){
+     positions.Add(editorTransform.position);
+     names.Add(editorTransform.gameObject.name);
+     zRotations.Add(editorTransform.eulerAngles.z);
+    }
     if(!isServer){
-      CmdSendCastleFromClientToHost(castleParent);
+      CmdSendCastleFromClientToHost(names,positions,zRotations);
     }else{
-      RpcSendCastleFromHostToClient(castleParent);
+      RpcSendCastleFromHostToClient(names,positions,zRotations);
     }
    }
    //we call this commad on client (onlyClient not a host) to send his map to the host
    [Command]
-   void CmdSendCastleFromClientToHost(GameObject castleParent){
+   void CmdSendCastleFromClientToHost(List<string> names,List<Vector3> positions,List<float> zRotations){
    if(!isServer)
     return;
-    oneVoneVarManager.OneVoneVarManager.castleParent = castleParent;
+    oneVoneVarManager.OneVoneVarManager.positions = positions;
+    oneVoneVarManager.OneVoneVarManager.names = names;
+    oneVoneVarManager.OneVoneVarManager.zRotations = zRotations;
     castleSentFromClientToHost = true;
     Debug.Log("castle sent from client to host");
    }
    //we call this ClientRpc on the host to his map to client(onlyClient)
    [ClientRpc]
-   void RpcSendCastleFromHostToClient(GameObject castleParent){
+   void RpcSendCastleFromHostToClient(List<string> names,List<Vector3> positions,List<float> zRotations){
     if(isServer)
      return;
-   oneVoneVarManager.OneVoneVarManager.castleParent = castleParent;    
+  oneVoneVarManager.OneVoneVarManager.positions = positions;
+  oneVoneVarManager.OneVoneVarManager.names = names;  
+  oneVoneVarManager.OneVoneVarManager.zRotations = zRotations;  
    Debug.Log("castle sent from host to client"); 
    }
    //this clientRpc is to enable the gameplay tools on the client

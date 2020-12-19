@@ -15,7 +15,9 @@ public class oneVoneVarManager : MonoBehaviour {
  public GameObject myCastle;
  public GameObject gameplayWindowObject;
  public static oneVoneVarManager OneVoneVarManager;
-
+ public List<Vector3> positions;
+ public List<string> names;
+ public List<float> zRotations;
  public oneVoneVarManager(){
   if(OneVoneVarManager == null)
   OneVoneVarManager = this;

@@ -14,7 +14,7 @@ public class Castle_Manager : MonoBehaviour
     public TMP_Text gameOverTotalGoldText;
     public TMP_Text gameOverTotalMoneyText;
     private bool isThisLastOpenedLevel;
-    private void Start()
+    private void OnEnable()
     {
         StartCoroutine("StartFunction");   
     }
