@@ -62,7 +62,7 @@ public class PlayerNetworkManager : NetworkBehaviour
     List<float> zRotations = new List<float>();
     foreach (Transform editorTransform in castleParent.transform){
      positions.Add(editorTransform.position);
-     names.Add(editorTransform.gameObject.name);
+     names.Add(editorTransform.gameObject.GetComponent<Castle_Object_Manager>().castle_Object.name);
      zRotations.Add(editorTransform.eulerAngles.z);
     }
     if(!isServer){
