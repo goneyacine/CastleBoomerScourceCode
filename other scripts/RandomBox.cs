@@ -29,6 +29,7 @@ public class RandomBox : MonoBehaviour
             }
             else
             {
+                try{
                 int randomMoneyValue = Random.Range(10, 300);
                 castle_Manager.money += randomMoneyValue;
                 int oldTotalMoneyValue = (int)DataSerialization.GetObject("money");
@@ -37,6 +38,7 @@ public class RandomBox : MonoBehaviour
                 youGotMoney.GetComponent<TMP_Text>().text = randomMoneyValue.ToString();
                 youGotMoney.transform.localPosition = Vector2.zero;
                 Destroy(youGotMoney, 3f);
+                }catch(System.Exception e){}
             }
         }
     }

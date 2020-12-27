@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-
 public class SoundManager : MonoBehaviour
 {
     public List<Sound> sounds;
@@ -11,12 +10,12 @@ public class SoundManager : MonoBehaviour
     {
         if (soundManager == null)
             soundManager = this;
-        else
+        else if(soundManager != this)
         {
             Destroy(gameObject);
             return;
         }
-        DontDestroyOnLoad(gameObject);
+    DontDestroyOnLoad(gameObject);
         foreach (Sound sound in sounds)
         {
             sound.source = gameObject.AddComponent<AudioSource>();
@@ -27,6 +26,9 @@ public class SoundManager : MonoBehaviour
             if (sound.name == "music")
                 sound.source.Play();
         }
+     try{
+        UpdateSoundsVolume();
+        }catch(System.Exception e){}
     }
     public void UpdateSoundsVolume()
     {
