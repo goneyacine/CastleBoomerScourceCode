@@ -5,13 +5,15 @@ using UnityEngine;
 public class ScaleSetter : MonoBehaviour
 {
 	public Transform parent;
+    public Transform child;
     public Vector3 scale = Vector3.one;
-    private void Start()
-    {
-     transform.localScale = new Vector3 ((scale.x / parent.localScale.x ) 
-     	,(scale.y / parent.localScale.y) ,1f);   
+    private Vector3 parentScale;
+    private void Awake(){
+    parentScale = parent.localScale;
     }
     private void Update(){
-     transform.eulerAngles = Vector3.zero;
+    transform.localScale = new Vector3(scale.x / parent.localScale.x,
+     scale.y / parent.localScale.y);
+     child.eulerAngles = Vector3.zero;
     }
 }

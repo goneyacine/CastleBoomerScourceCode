@@ -15,6 +15,7 @@ public class MapStarter : MonoBehaviour{
 		Destroy(gameObject);
 	}
 	public void SetUpMap(){
+	try{
      for(int i = 0; i < oneVoneVarManager.OneVoneVarManager.names.Count;i++){
      GameObject castleObject = Instantiate(castleObjectPrefab,oneVoneVarManager.OneVoneVarManager.positions[i],
      Quaternion.identity,castle);
@@ -27,5 +28,9 @@ public class MapStarter : MonoBehaviour{
      }
      Debug.Log("map started");
      }
-	}
+	}catch(Exception e){
+	oneVoneVarManager.OneVoneVarManager.errorPanel.SetActive(true);
+    oneVoneVarManager.OneVoneVarManager.errorContent.text = e.ToString();
+}
+}
 }

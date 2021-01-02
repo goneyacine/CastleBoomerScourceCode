@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+[ExecuteInEditMode]
 public class CustomScroll : MonoBehaviour
 {
     public Vector2 minMaxYPosition;

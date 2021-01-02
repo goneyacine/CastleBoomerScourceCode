@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class oneVoneVarManager : MonoBehaviour {
-
+ public GameObject WaitingPanel;
  public GameObject mapEditor;
  public GameObject oneVoneChoice;
  public GameObject errorPanel;

@@ -22,12 +22,26 @@ public class PlayerNetworkManager : NetworkBehaviour
 
     //if the user pressed space and his map is not saved we save the map
     if(Input.GetKeyDown(KeyCode.Space) && !mapSaved){
+     oneVoneVarManager.OneVoneVarManager.WaitingPanel.SetActive(true);
      SaveCastle(oneVoneVarManager.OneVoneVarManager.myCastle);
      if(isServer)
      castleSentFromHostToClient = true;
      mapSaved = true;
     }
    }
+   //check if the local gameIsDone
+   if(localGameDone == false ){
+    if(oneVoneVarManager.OneVoneVarManager.localGameDone){
+      if(isServer)  
+      localGameDone = true;
+      else
+      CmdGameDoneOnClientOnly();
+     }
+    }
+    if(clientGameDone && localGameDone){
+      oneVoneVarManager.OneVoneVarManager.gameDone = true;
+      RpcGameDone();
+    }
    }catch(Exception e){
     oneVoneVarManager.OneVoneVarManager.errorPanel.SetActive(true);
     oneVoneVarManager.OneVoneVarManager.errorContent.text = e.ToString();
@@ -126,10 +140,23 @@ public class PlayerNetworkManager : NetworkBehaviour
     oneVoneVarManager.OneVoneVarManager.errorContent.text = e.ToString();
      }
    }
+   [Command]
+   void CmdGameDoneOnClientOnly(){
+    if(!isServer)
+    return;
+    clientGameDone = true;
+   }
+   [ClientRpc]
+   void RpcGameDone(){
+    if(isServer)
+    return;
+    oneVoneVarManager.OneVoneVarManager.gameDone = true;
+   }
    private bool castleSentFromClientToHost = false;
    private bool castleSentFromHostToClient = false;
    private bool mapSaved = false;
    private bool gameStarted = false;
-
+   private bool localGameDone;
+   public bool clientGameDone;
   }
 

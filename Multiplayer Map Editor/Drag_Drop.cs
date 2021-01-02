@@ -20,7 +20,7 @@ public class Drag_Drop : MonoBehaviour
 
     }
     //we call this function when we change the castle object 
-    private void OnChangeCastleObject()
+    public void OnChangeCastleObject()
     {
     	if(castleObject == null)
     	 return;

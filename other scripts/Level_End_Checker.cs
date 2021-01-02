@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,6 +17,7 @@ public class Level_End_Checker : MonoBehaviour
     private GameObject[] bullets;
     private bool done = false;
     public TMP_Text loseOrWin;
+    public bool isMultiplayer = false;
     private void Start()
     {
         damage_ScoreUI_Mannager = FindObjectOfType<Damage_ScoreUI_Mannager>();
@@ -42,13 +43,17 @@ public class Level_End_Checker : MonoBehaviour
             if ((castle_Manager.damagePercentage >= 99 || bulletsNumber == 0) && noThingIsMoving && bullets.Length == 0)
                 Invoke("OnEndLevel", 2f);
         }
+        if(isMultiplayer){
+            if(oneVoneVarManager.OneVoneVarManager.gameDone)
+              onEndLevel.Invoke();
+        }
     }
     public void OnEndLevel()
     {
         if (done)
             return;
         finalScore = castle_Manager.damagePercentage;
-        if (finalScore >= 50)
+        if (finalScore >= 50 && !isMultiplayer)
         {
           if((int)DataSerialization.GetObject("selectedLevel") + 1 == (int)DataSerialization.GetObject("lastOpenedLevel"))
           DataSerialization.SaveData((int)DataSerialization.GetObject("lastOpenedLevel") + 1, "lastOpenedLevel");
@@ -56,10 +61,15 @@ public class Level_End_Checker : MonoBehaviour
         }
         else
         {
+            if(!isMultiplayer)
             loseOrWin.text = "Lose";
         }
-        onEndLevel.Invoke();
         DataSerialization.SaveData((int)DataSerialization.GetObject("xp") + damage_ScoreUI_Mannager.score, "xp");
+        if(!isMultiplayer){
         done = true;
+        onEndLevel.Invoke();
+        }
+        else 
+        oneVoneVarManager.OneVoneVarManager.localGameDone = true;
     }
 }

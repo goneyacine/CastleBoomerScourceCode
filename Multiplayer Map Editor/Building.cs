@@ -19,7 +19,6 @@ public class Building : MonoBehaviour
     private void Update()
     {
       myMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-      transformObjectsParent.transform.eulerAngles = Vector2.zero;
       if(Input.GetMouseButtonDown(0) && Vector2.Distance(transform.position,myMousePosition) <= cursorDistanceToSelect)
       editorManager.SetSelectedEditorObject(this);
      if(isSelected){
