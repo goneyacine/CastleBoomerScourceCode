@@ -44,8 +44,12 @@ public class Level_End_Checker : MonoBehaviour
                 Invoke("OnEndLevel", 2f);
         }
         if(isMultiplayer){
-            if(oneVoneVarManager.OneVoneVarManager.gameDone)
+            if(oneVoneVarManager.OneVoneVarManager.gameDone){
+              oneVoneVarManager.OneVoneVarManager.waitingResults.SetActive(false);
               onEndLevel.Invoke();
+            }else if(oneVoneVarManager.OneVoneVarManager.localGameDone && !oneVoneVarManager.OneVoneVarManager.gameDone){
+              oneVoneVarManager.OneVoneVarManager.waitingResults.SetActive(false);
+            }
         }
     }
     public void OnEndLevel()
@@ -69,7 +73,11 @@ public class Level_End_Checker : MonoBehaviour
         done = true;
         onEndLevel.Invoke();
         }
-        else 
+        else{
         oneVoneVarManager.OneVoneVarManager.localGameDone = true;
+        oneVoneVarManager.OneVoneVarManager.myTotalXP = damage_ScoreUI_Mannager.score;
+        oneVoneVarManager.OneVoneVarManager.myTotalDamage = damage_ScoreUI_Mannager.castle_Manager.damagePercentage;
+
+    }
     }
 }

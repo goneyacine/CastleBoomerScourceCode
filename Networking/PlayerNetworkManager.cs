@@ -40,7 +40,8 @@ public class PlayerNetworkManager : NetworkBehaviour
     }
     if(clientGameDone && localGameDone){
       oneVoneVarManager.OneVoneVarManager.gameDone = true;
-      RpcGameDone();
+      RpcGameDone(oneVoneVarManager.OneVoneVarManager.myTotalDamage,
+    oneVoneVarManager.OneVoneVarManager.myTotalXP,(string)DataSerialization.GetObject("name"));    
     }
    }catch(Exception e){
     oneVoneVarManager.OneVoneVarManager.errorPanel.SetActive(true);
@@ -147,10 +148,21 @@ public class PlayerNetworkManager : NetworkBehaviour
     clientGameDone = true;
    }
    [ClientRpc]
-   void RpcGameDone(){
+   void RpcGameDone(int damage,int xp,string playerName){
     if(isServer)
     return;
+    oneVoneVarManager.OneVoneVarManager.otherPlayerDamage = damage;
+    oneVoneVarManager.OneVoneVarManager.otherPlayerScore = xp;
+    oneVoneVarManager.OneVoneVarManager.otherPlayerName = playerName;
+    CmdSendResultsToHost(oneVoneVarManager.OneVoneVarManager.myTotalDamage,
+    oneVoneVarManager.OneVoneVarManager.myTotalXP,(string)DataSerialization.GetObject("name"));
     oneVoneVarManager.OneVoneVarManager.gameDone = true;
+   }
+   [Command]
+   void CmdSendResultsToHost(int damage,int xp ,string playerName){
+    oneVoneVarManager.OneVoneVarManager.otherPlayerDamage = damage;
+    oneVoneVarManager.OneVoneVarManager.otherPlayerScore = xp;
+    oneVoneVarManager.OneVoneVarManager.otherPlayerName = playerName;
    }
    private bool castleSentFromClientToHost = false;
    private bool castleSentFromHostToClient = false;

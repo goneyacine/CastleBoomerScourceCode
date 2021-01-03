@@ -27,11 +27,23 @@ public class oneVoneVarManager : MonoBehaviour {
  public TMP_Text otherPlayerDamageText;
  public int otherPlayerDamage;
  public int otherPlayerScore;
+ public int myTotalDamage;
+ public int myTotalXP;
  public string otherPlayerName;
+ public GameObject waitingResults;
  public oneVoneVarManager(){
   if(OneVoneVarManager == null)
   OneVoneVarManager = this;
   else if (OneVoneVarManager != this)
   Destroy(gameObject);
+ }
+ private void Update(){
+ 	if(gameDone){
+    yourNameText.text = (string)DataSerialization.GetObject("name");
+ 	otherPlayerNameText.text = otherPlayerName;
+ 	otherPlayerScoretext.text = otherPlayerScore.ToString();
+ 	otherPlayerDamageText.text = otherPlayerDamage.ToString();
+ 	}
+
  }
 }

@@ -31,6 +31,6 @@ public class MapStarter : MonoBehaviour{
 	}catch(Exception e){
 	oneVoneVarManager.OneVoneVarManager.errorPanel.SetActive(true);
     oneVoneVarManager.OneVoneVarManager.errorContent.text = e.ToString();
-}
-}
+   }
+ }
 }
