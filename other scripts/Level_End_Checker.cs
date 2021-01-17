@@ -18,7 +18,7 @@ public class Level_End_Checker : MonoBehaviour
     private bool done = false;
     public TMP_Text loseOrWin;
     public bool isMultiplayer = false;
-    private void Start()
+    private void OnEnable()
     {
         damage_ScoreUI_Mannager = FindObjectOfType<Damage_ScoreUI_Mannager>();
     }
@@ -40,8 +40,8 @@ public class Level_End_Checker : MonoBehaviour
         bullets = GameObject.FindGameObjectsWithTag("Bullet");
         if (!done)
         {
-            if ((castle_Manager.damagePercentage >= 99 || bulletsNumber == 0) && noThingIsMoving && bullets.Length == 0)
-                Invoke("OnEndLevel", 2f);
+            if ((castle_Manager.damagePercentage >= 95 || bulletsNumber == 0) && noThingIsMoving && bullets.Length == 0)
+                Invoke("OnEndLevel", .3f);
         }
         if(isMultiplayer){
             if(oneVoneVarManager.OneVoneVarManager.gameDone){

@@ -5,7 +5,28 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 public class oneVoneVarManager : MonoBehaviour {
- public GameObject WaitingPanel;
+ public oneVoneVarManager(){
+  if(OneVoneVarManager == null)
+  OneVoneVarManager = this;
+  else if (OneVoneVarManager != this)
+  Destroy(gameObject);
+ }
+ private void Update(){
+ 	if(gameDone){
+    yourNameText.text = (string)DataSerialization.GetObject("name");
+ 	otherPlayerNameText.text = otherPlayerName;
+ 	otherPlayerScoretext.text = "Total XP : " + otherPlayerScore.ToString() + "XP";
+ 	otherPlayerDamageText.text = "Total Damage : " + otherPlayerDamage.ToString() + "%";
+ 	if(myTotalDamage > otherPlayerDamage)
+ 	win.text = "You Win";
+ 	else if(myTotalDamage < otherPlayerDamage)
+ 	win.text = "You Lose";
+ 	else
+ 	win.text = "No Winners";
+ 	}
+
+ }
+  public GameObject WaitingPanel;
  public GameObject mapEditor;
  public GameObject oneVoneChoice;
  public GameObject errorPanel;
@@ -29,21 +50,7 @@ public class oneVoneVarManager : MonoBehaviour {
  public int otherPlayerScore;
  public int myTotalDamage;
  public int myTotalXP;
+ public TMP_Text win;
  public string otherPlayerName;
  public GameObject waitingResults;
- public oneVoneVarManager(){
-  if(OneVoneVarManager == null)
-  OneVoneVarManager = this;
-  else if (OneVoneVarManager != this)
-  Destroy(gameObject);
- }
- private void Update(){
- 	if(gameDone){
-    yourNameText.text = (string)DataSerialization.GetObject("name");
- 	otherPlayerNameText.text = otherPlayerName;
- 	otherPlayerScoretext.text = otherPlayerScore.ToString();
- 	otherPlayerDamageText.text = otherPlayerDamage.ToString();
- 	}
-
- }
 }

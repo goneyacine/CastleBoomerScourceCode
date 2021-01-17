@@ -7,6 +7,7 @@ public class InitialDataLoader : MonoBehaviour
     public Slider postProcessingSlider;
     public Slider soundSlider;
     public Slider musicSlider;
+    public GameObject ControlModePanel;
     private void Awake()
     {
         if (!DataSerialization.fileExists(Application.persistentDataPath + "/firstTimePlayer.txt"))
@@ -30,6 +31,8 @@ public class InitialDataLoader : MonoBehaviour
             List<BulletData> selectedBullets = new List<BulletData>();
             selectedBullets.Add(new BulletData("default bullet", 2));
             DataSerialization.SaveData(selectedBullets, "selectedBullets");
+            DataSerialization.SaveData("Touche", "ControlMode");
+            ControlModePanel.SetActive(true);
 
         }
         setUpSettingPanelValues();

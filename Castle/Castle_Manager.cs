@@ -14,6 +14,8 @@ public class Castle_Manager : MonoBehaviour
     public TMP_Text gameOverTotalGoldText;
     public TMP_Text gameOverTotalMoneyText;
     private bool isThisLastOpenedLevel;
+    public int maxFramesToUpdateData = 10;
+    private int framesToUpdateData = 0;
     private void OnEnable()
     {
         StartCoroutine("StartFunction");   
@@ -36,6 +38,13 @@ public class Castle_Manager : MonoBehaviour
         currentSpace = startSpace;
         UpdateData();
         yield return null;
+    }
+    private void Update(){
+     if(framesToUpdateData == 0){
+        UpdateData();
+        framesToUpdateData = maxFramesToUpdateData;
+     }else 
+     framesToUpdateData--;
     }
     public void UpdateData()
     {

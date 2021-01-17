@@ -10,6 +10,12 @@ public class ZOOM : MonoBehaviour
     {
         UpdateData();
     }
+    private void Update(){
+        if(Input.GetKeyDown(KeyCode.O))
+        ZoomOut();
+        else if (Input.GetKeyDown(KeyCode.I))
+        ZoomIn();
+    }
     private void UpdateData()
     {
         try
