@@ -11,9 +11,11 @@ public class ShootingManager : MonoBehaviour
     public GameObject bulletPrefab;
     public CannonShooterManager cannonShooterManager;
     public float mouseSensetvity = .2f;
+     private string controlMode = "Mouse";
     private void Start()
     {
         bullets = cannonHeadManager.gameObject.GetComponent<CannonHeadBulletsManager>().bullets;
+        controlMode = DataSerialization.GetObject("ControlMode") as string;
 
     }
     private void Update()
@@ -26,8 +28,13 @@ public class ShootingManager : MonoBehaviour
                 selectedBulletRole = 0;
             selectedBullet = bullets[selectedBulletRole];
         }
-        if (Input.GetMouseButtonUp(0) || Input.GetMouseButton(0))
-        {
+        if (((Input.GetMouseButtonUp(0) || Input.GetMouseButton(0)) && controlMode == "Mouse") || (Input.GetKeyDown(KeyCode.Space) && controlMode == "Keyboard"))
+        Shoot();
+
+
+        }
+        public void Shoot(){
+        
             shoot.cannonHeadManager = cannonHeadManager;
             shoot.bullet = selectedBullet;
             shoot.cannonShooter = cannonShooterManager.cannonShooter;
@@ -35,5 +42,10 @@ public class ShootingManager : MonoBehaviour
             shoot.mouseSensetvity = mouseSensetvity;
             shoot.ShootMethod();
         }
-    }
+        public void MoreShootingDistance(float value){
+            shoot.MoreShootingDistance(value);
+        }
+        public void LessShootingDistance(float value){
+            shoot.LessShootingDistance(value);
+        }
 }

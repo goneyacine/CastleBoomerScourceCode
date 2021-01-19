@@ -8,4 +8,8 @@ public abstract class Shoot : MonoBehaviour
     public float mouseSensetvity;
     public float finalVelocity;
     public abstract void ShootMethod();
+    public abstract void MoreShootingDistance(float value);
+    public abstract void LessShootingDistance(float value);
+
+
 }

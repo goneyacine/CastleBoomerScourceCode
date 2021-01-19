@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,17 +15,25 @@ public class ProjectileMotion : MonoBehaviour
     public GameObject pointPrefab;
     public float scaleChanging = .1f;
     private List<GameObject> points;
-
+    private string controlMode = "Mouse";
+    private void Start(){
+        controlMode = DataSerialization.GetObject("ControlMode") as string;
+    }
     private void Update()
     {
         //setting the max time multiplyer value
-        if (startVelocity > 0.1f && Input.GetMouseButton(0))
+        if ((startVelocity > 0.1f && Input.GetMouseButton(0)) || (controlMode != "Mouse" && startVelocity > .1f))
             maxTimeMultiplyer = 1;
         else
+            if(controlMode == "Mouse" || (controlMode != "Mouse" && startVelocity <.1f))
             maxTimeMultiplyer = 0;
-        if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0) || Input.GetAxis("Horizontal") != 0)
         {
-            //calculate and set the points number 
+            UpdateProjectileMotion();
+        }
+    }
+    public void UpdateProjectileMotion(){
+        //calculate and set the points number 
             int pointsNumber = (int)(maxTime * maxTimeMultiplyer / deltaTime);
             float currentPointScale = pointPrefab.transform.localScale.x;
             //find the position of every point
@@ -60,7 +68,6 @@ public class ProjectileMotion : MonoBehaviour
                     currentPointScale -= scaleChanging;
                 }
             }
-        }
     }
 }
 

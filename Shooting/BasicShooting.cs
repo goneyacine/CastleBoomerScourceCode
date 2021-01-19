@@ -6,10 +6,26 @@ public class BasicShooting : Shoot
     private bool mouseIsTouchingUI = false;
     private float VelocityMultiplyer = .5f;
     private float finalVelocityMultiplyer = 1f;
+     private string controlMode = "Mouse";
+    private void Start(){
+    controlMode = DataSerialization.GetObject("ControlMode") as string;
+    }
+    public override void MoreShootingDistance(float value){
+            VelocityMultiplyer += value;
+    }
+    public override void LessShootingDistance(float value){
+            VelocityMultiplyer -= value;
+    }
     public override void ShootMethod()
     {
-        if(Input.GetMouseButton(0))
+        if((Input.GetMouseButton(0) && controlMode == "Mouse"))
         VelocityMultiplyer += Input.GetAxis("Mouse X") * mouseSensetvity;
+        else if (controlMode == "Keyboard"){
+            if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+            VelocityMultiplyer += .2f;
+            else if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+            VelocityMultiplyer -= .2f;
+        }
 
         if (VelocityMultiplyer > 1)
             VelocityMultiplyer = 1;
@@ -42,7 +58,7 @@ public class BasicShooting : Shoot
         //shoot a bullet when the player release the mouse button
         CannonHeadBulletsManager cannonHeadBulletsManager = cannonHeadManager.gameObject.GetComponent<CannonHeadBulletsManager>();
 
-        if (Input.GetMouseButtonUp(0) && cannonHeadBulletsManager.bulletsNumbers[cannonHeadBulletsManager.bullets.IndexOf(bullet)] > 0 && !mouseIsTouchingUI && Camera.main.ScreenToWorldPoint(Input.mousePosition).x >= cannonHeadManager.gameObject.transform.position.x) 
+        if (((Input.GetMouseButtonUp(0) && controlMode == "Mouse") || (Input.GetKeyUp(KeyCode.Space) && controlMode == "Keyboard") || controlMode == "Touche" ) && cannonHeadBulletsManager.bulletsNumbers[cannonHeadBulletsManager.bullets.IndexOf(bullet)] > 0 && !mouseIsTouchingUI && Camera.main.ScreenToWorldPoint(Input.mousePosition).x >= cannonHeadManager.gameObject.transform.position.x) 
         {
             //create bullet object
             GameObject newBullet = Instantiate(bulletPrefab, cannonHeadManager.transform.Find("Cannon Shooter").Find("Shooting Point").transform.position, Quaternion.identity);
