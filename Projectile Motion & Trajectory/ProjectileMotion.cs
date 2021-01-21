@@ -27,7 +27,7 @@ public class ProjectileMotion : MonoBehaviour
         else
             if(controlMode == "Mouse" || (controlMode != "Mouse" && startVelocity <.1f))
             maxTimeMultiplyer = 0;
-        if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0) || Input.GetAxis("Horizontal") != 0)
+        if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0) || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
         {
             UpdateProjectileMotion();
         }
