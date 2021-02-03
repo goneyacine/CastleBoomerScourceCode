@@ -18,6 +18,7 @@ public class Level_End_Checker : MonoBehaviour
     private bool done = false;
     public TMP_Text loseOrWin;
     public bool isMultiplayer = false;
+    public bool loseMethodUsed = false;
     private void OnEnable()
     {
         damage_ScoreUI_Mannager = FindObjectOfType<Damage_ScoreUI_Mannager>();
@@ -57,7 +58,7 @@ public class Level_End_Checker : MonoBehaviour
         if (done)
             return;
         finalScore = castle_Manager.damagePercentage;
-        if (finalScore >= 50 && !isMultiplayer)
+        if (finalScore >= 50 && !isMultiplayer && !loseMethodUsed)
         {
           if((int)DataSerialization.GetObject("selectedLevel") + 1 == (int)DataSerialization.GetObject("lastOpenedLevel"))
           DataSerialization.SaveData((int)DataSerialization.GetObject("lastOpenedLevel") + 1, "lastOpenedLevel");
@@ -79,5 +80,14 @@ public class Level_End_Checker : MonoBehaviour
         oneVoneVarManager.OneVoneVarManager.myTotalDamage = damage_ScoreUI_Mannager.castle_Manager.damagePercentage;
 
     }
+}
+ //use this method when you want the player to lose without needing to check his state, for example when he destroy something he should not destroy.
+    public void Lose()
+    {
+
+    loseMethodUsed = true;
+
+    Invoke("OnEndLevel", .5f);
+    
     }
 }

@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class RotateAround : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   public Transform target;
+   public float rotatingSpeed = 1f;
+   private void FixedUpdate(){
+   transform.eulerAngles += Vector3.forward * rotatingSpeed;
+   }
 }
