@@ -15,7 +15,7 @@ public class DimondScript : MonoBehaviour {
      currentRate ++;
      else {
      	if(balanceObject == null)
-     	gameObject.RemoveComponent<SpringJoint2D>();
+     	Destroy(GetComponent<SpringJoint2D>());
      currentRate = 0;
      }
     }

@@ -8,7 +8,7 @@ public class DrawLineBetweenPoints : MonoBehaviour {
 	private LineRenderer lineRenderer;
 	//the number of frames between line renderer positions update
 	[Range(1,60)]
-    public int MaxFrameNumToNextUpdate = 8f;
+    public int MaxFrameNumToNextUpdate = 8;
  
     private int currentFrame; 
 
