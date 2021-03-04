@@ -14,6 +14,7 @@ public class Castle_Object_Manager : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider2D;
     private Rigidbody2D rb;
+    public float scaleMultiplyer = 1f;
     private void Start()
     {
         health = castle_Object.maxHealth;
@@ -26,10 +27,8 @@ public class Castle_Object_Manager : MonoBehaviour
     {
         //set the texture of the castle object 
         spriteRenderer.sprite = castle_Object.texture;
-        //set the color of the castle object
-        spriteRenderer.color = castle_Object.color;
         //set the scale
-        transform.localScale = castle_Object.scale;
+        transform.localScale = castle_Object.scale * scaleMultiplyer;
         //set the size of the box collider 
         boxCollider2D.size = castle_Object.boxColliderScale;
         //calling "onAlive" unity event

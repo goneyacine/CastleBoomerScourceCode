@@ -12,7 +12,6 @@ public class Castle_Object : ScriptableObject
     public Vector2 scale;
     public Vector2 boxColliderScale;
     public Sprite texture;
-    public Color color;
     public float maxHealth;
     public float space;
     public GameObject dieEffect;

@@ -9,10 +9,6 @@ public class Castle_Manager : MonoBehaviour
     public float startSpace = 0;
     public float currentSpace;
     public int damagePercentage;
-    public int gold = 0;
-    public int money = 0;
-    public TMP_Text gameOverTotalGoldText;
-    public TMP_Text gameOverTotalMoneyText;
     private bool isThisLastOpenedLevel;
     public int maxFramesToUpdateData = 10;
     private int framesToUpdateData = 0;
@@ -63,8 +59,6 @@ public class Castle_Manager : MonoBehaviour
         damagePercentage = (int)((startSpace - currentSpace) * 100 / (Mathf.Abs(startSpace) + 1));
         if (damagePercentage == 99)
             damagePercentage++;
-        gameOverTotalGoldText.text = "Gold : " + gold.ToString();
-        gameOverTotalMoneyText.text = "Money : " +  money.ToString();
     }
     private void UpdateCastleObjectList()
     {

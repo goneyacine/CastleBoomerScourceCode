@@ -17,7 +17,6 @@ public class CannonShooter : ScriptableObject
     //other things
     public Vector2 shootingPointLocalPosition;
     public GameObject shootingEffect;
-    public Color color;
     public Shoot shoot;
     public float velocityBoost;
    
