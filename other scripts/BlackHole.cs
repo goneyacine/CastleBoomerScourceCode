@@ -8,6 +8,7 @@ public class BlackHole : MonoBehaviour
    public float grapingForce = 100f;
    public float effectingDistance = 5f;
    private int currentFrame = 0;
+   public int maxFrames = 0;
    private void FixedUpdate(){
       if(currentFrame <= 0){
    	foreach(Rigidbody2D rb in effectedObjects){
@@ -25,7 +26,7 @@ public class BlackHole : MonoBehaviour
    	 continue;
    	}
    }
-   currentFrame = 0;
+   currentFrame = maxFrames;
   }else 
    currentFrame--;
 } 

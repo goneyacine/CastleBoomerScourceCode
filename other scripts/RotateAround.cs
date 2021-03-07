@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class RotateAround : MonoBehaviour
 {
-   public Transform target;
    public float rotatingSpeed = 1f;
    private void FixedUpdate(){
    transform.eulerAngles += Vector3.forward * rotatingSpeed;
