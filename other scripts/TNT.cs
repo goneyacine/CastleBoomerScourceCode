@@ -18,7 +18,7 @@ public class TNT : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Bullet")
+        if (collision.collider.tag == "Bullet" || collision.collider.tag == "End Point")
             Explod();
     }
     private void OnTriggerEnter2D(Collider2D collision)

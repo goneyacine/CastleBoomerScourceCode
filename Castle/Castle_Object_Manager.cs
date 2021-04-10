@@ -43,7 +43,7 @@ public class Castle_Object_Manager : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //check if a bullet hit this object , if that happen then take damage
-        if (collision.collider.tag == "Bullet")
+        if (collision.collider.tag == "Bullet" || collision.collider.tag == "End Point")
         {
             health -= collision.collider.GetComponent<BulletManager>().bullet.damage;
         }

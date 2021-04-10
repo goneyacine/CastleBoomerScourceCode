@@ -10,6 +10,8 @@ public class BulletManager : MonoBehaviour
     private UnityEvent onDie;
     private float time;
     private float deadTime;
+    public float destroyDelay;
+    public bool destroyOnCollision = true;
     private void Start()
     {
         //set the needed unity event
@@ -80,6 +82,7 @@ public class BulletManager : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(gameObject);
+    	if(destroyOnCollision)
+        Destroy(gameObject,destroyDelay);
     }
 }

@@ -17,9 +17,11 @@ public class BlackHoleBullet : MonoBehaviour
  }
  private void OnTriggerStay2D(Collider2D collider){
  if(currentFrame <= 0){
+ 	if(Vector2.Distance(transform.position,collider.transform.position) <= 3)
+ 	Destroy(collider.gameObject);
  	Rigidbody2D colliderRB = collider.GetComponent<Rigidbody2D>();
  	if(colliderRB != null)
- 	colliderRB.AddForce(grapingForce * colliderRB.mass);
- }
- }
+ 	colliderRB.AddForce(grapingForce * colliderRB.mass * ((transform.position - collider.transform.position)/Vector2.Distance(transform.position,collider.transform.position)));
+    }
+  }
 }
