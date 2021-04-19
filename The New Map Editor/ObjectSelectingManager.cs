@@ -21,7 +21,7 @@ public class ObjectSelectingManager : MonoBehaviour
     //setting the items UI displayers info to there default values
     for(int i = 0;i < 9;i++)
     {
-     itemsUIDisplayers[i].iconImage = defaultItemSprite;
+     itemsUIDisplayers[i].iconImage.sprite = defaultItemSprite;
      itemsUIDisplayers[i].nameText.text = ""; 
      itemsUIDisplayers[i].clickButton.gameObject.GetComponent<ItemCreateButton>().myObject = null;
     }
