@@ -14,8 +14,8 @@ public class MapEditorManager : MonoBehaviour
   //setting the position of the transform & rotatings tools
   if(selectedMapEditorObject != null)
   {
-   transformTool.gameObject.SetActive(false);
-   rotatingTool.gameObject.SetActive(false);  
+   transformTool.gameObject.SetActive(true);
+   rotatingTool.gameObject.SetActive(true);  
    transformTool.position = selectedMapEditorObject.gameObject.transform.position;
    rotatingTool.position =  selectedMapEditorObject.gameObject.transform.position;
   }else {
@@ -32,21 +32,18 @@ public class MapEditorManager : MonoBehaviour
     	
     }
   }
+  if(selectedMapEditorObject != null)
   myOldPosition = (Vector2)selectedMapEditorObject.transform.position;
   oldMousePosition = (Vector2)mouseFollower.position;
  }
  public void Rotate()
  {
-   Vector2 oldMouseDirection = (oldMousePosition - myOldPosition) / Vector2.Distance(oldMousePosition,myOldPosition);
-   float oldMouseRotation = Mathf.Atan2(oldMouseDirection.y, oldMouseDirection.x);
-
     Vector2 mouseDirection = ((Vector2)mouseFollower.position - (Vector2)selectedMapEditorObject.transform.position) / Vector2.Distance((Vector2)mouseFollower.position,selectedMapEditorObject.transform.position);
-    float NewMouseRotation = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
-    selectedMapEditorObject.transform.eulerAngles += (NewMouseRotation - oldMouseRotation) * Vector3.forward * rotatingSpeed; 
+    selectedMapEditorObject.transform.eulerAngles = Mathf.Atan2(mouseDirection.y, mouseDirection.x) * Mathf.Rad2Deg * Vector3.forward; 
   }
   public void Transform()
   {
-   transform.position = myOldPosition + ((Vector2)mouseFollower.position - oldMousePosition) * transformAxis * transformSpeed;
+   selectedMapEditorObject.transform.position = myOldPosition + ((Vector2)mouseFollower.position - oldMousePosition) * transformAxis * transformSpeed;
   }
 
   public void SetPlayerIsRotating(bool value){this.playerIsRotating = value;}
@@ -55,6 +52,11 @@ public class MapEditorManager : MonoBehaviour
   public void SetAxisToX(){this.transformAxis = Vector2.right;}
   public void SetAxisToY(){this.transformAxis = Vector2.up;}
   public void SetAxisToAll(){this.transformAxis = Vector2.one;}
+
+  public void DestroySelectedObject()
+  {
+   Destroy(selectedMapEditorObject.gameObject);
+  }
 
  public static MapEditorManager mapEditorManager; 
  //the selected map editor object 
@@ -73,8 +75,6 @@ public class MapEditorManager : MonoBehaviour
 
  public Vector2 transformAxis;
  
- [Range(.001f,359f)]
- public float rotatingSpeed = .8f;
  [Range(.001f,500f)]
  public float transformSpeed = 1.5f;
  

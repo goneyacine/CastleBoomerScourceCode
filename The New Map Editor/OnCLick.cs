@@ -7,15 +7,25 @@ public class OnCLick : MonoBehaviour
 {  
     public UnityEvent onClick;
     public UnityEvent onClickEnd;
+    private bool screenHasBeenTouched = false;
     private void OnTriggerStay2D(Collider2D other)
     {
-     if(Input.GetMouseButton(0) || Input.touchCount > 0)
+      if(other.tag == "MouseFollower"){
+     if(Input.GetMouseButtonDown(0) || Input.touchCount > 0)
      onClick.Invoke();
-	}
-	 private void OnTriggerExit2D(Collider2D other)
+	  }
+    }	
+	 private void Update()
     {
-     if(Input.GetMouseButton(0) || Input.touchCount > 0)
+     
+     if(Input.GetMouseButtonUp(0) || (Input.touchCount == 0 && screenHasBeenTouched))
      onClickEnd.Invoke();
+
+
+     if(Input.touchCount >= 1)
+     screenHasBeenTouched = true;
+     else 
+     screenHasBeenTouched = false;
 	}
 
 }
