@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +20,6 @@ public class LevelSaver : MonoBehaviour
      string levelName = input.text;
      Level lv = new Level();
      lv.name = levelName;
-     lv.level = null;
      currentLevelName = levelName;
      System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Level));  
      FileStream file = File.Create(Application.persistentDataPath + "/Multiplayer Levels/" + levelName + ".xml");  
@@ -40,7 +39,7 @@ public class LevelSaver : MonoBehaviour
     	{
          Level lv = new Level();
          lv.name = currentLevelName;
-         lv.level = level;
+         lv.SetLevel(level);
          System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Level));  
          FileStream file = new FileStream(Application.persistentDataPath + "/Multiplayer Levels/" + currentLevelName + ".xml",FileMode.Open);  
          writer.Serialize(file,lv);  

@@ -1,7 +1,0 @@
-{
-  "#base": "JsonNet.base.json",
-  "id": "JsonNet-Lite",
-  "files": [
-    "../Newtonsoft.Json/bin/ReleaseLite/Newtonsoft.Json.dll"
-  ]
-}
