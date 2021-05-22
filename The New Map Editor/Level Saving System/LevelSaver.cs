@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+
+
 public class LevelSaver : MonoBehaviour
 {
     
@@ -10,7 +13,7 @@ public class LevelSaver : MonoBehaviour
 
     public void CreateNewLevel(InputField input)
     {
-
+      
      //checking if there is a folder for the levels if there is not then create one
      if(!Directory.Exists(Application.persistentDataPath + "/Multiplayer Levels"))
      {
@@ -21,10 +24,11 @@ public class LevelSaver : MonoBehaviour
      Level lv = new Level();
      lv.name = levelName;
      currentLevelName = levelName;
-     System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Level));  
-     FileStream file = File.Create(Application.persistentDataPath + "/Multiplayer Levels/" + levelName + ".xml");  
-     writer.Serialize(file,lv);  
-     file.Close();  
+     string path = Application.persistentDataPath + "/Multiplayer Levels/" + levelName + ".level";
+     BinaryFormatter formatter = new BinaryFormatter();
+     FileStream stream = new FileStream(path, FileMode.Create);
+     formatter.Serialize(stream,lv);
+     stream.Close();  
      Debug.Log("Level Created");
     }
 
@@ -40,10 +44,11 @@ public class LevelSaver : MonoBehaviour
          Level lv = new Level();
          lv.name = currentLevelName;
          lv.SetLevel(level);
-         System.Xml.Serialization.XmlSerializer writer = new System.Xml.Serialization.XmlSerializer(typeof(Level));  
-         FileStream file = new FileStream(Application.persistentDataPath + "/Multiplayer Levels/" + currentLevelName + ".xml",FileMode.Open);  
-         writer.Serialize(file,lv);  
-         file.Close();  
+         string path = Application.persistentDataPath + "/Multiplayer Levels/" + currentLevelName + ".level";
+         BinaryFormatter formatter = new BinaryFormatter();
+         FileStream stream = new FileStream(path, FileMode.Create);
+         formatter.Serialize(stream,lv);
+         stream.Close();
          Debug.Log("Level Saved");
     	}
     }
