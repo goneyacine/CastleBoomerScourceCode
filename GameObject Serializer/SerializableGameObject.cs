@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using UnityEditor.Animations;
 
 [System.Serializable]
 public class SerializableGameObject
@@ -82,14 +84,9 @@ public class SerializableSprite
 {
 	public SerializableSprite(Sprite sprite)
 	{
-		Texture2D tex = sprite.texture;
-		this.width = tex.width;
-		this.height = tex.height;
-		this.data =  ImageConversion.EncodeToPNG(tex);
+		this.spriteName = sprite.name;
 	}
-	public int width;
-	public int height;
-	public byte[] data;
+	public string spriteName;
 }
 [System.Serializable]
 public class SerializableColor
@@ -170,12 +167,11 @@ public class Serializable4x4Matrix
 	public float[,] data = new float[4, 4];
 }
 [System.Serializable]
-public class SerializableMaterial
+public class SerializableAnimatorController
 {
-	public SerializableMaterial(string path)
+	public SerializableAnimatorController(AnimatorController animatorController)
 	{
-		this.path = path;
+		this.animatorControllerName = animatorController.name;
 	}
-
-	public string path;
+	public string animatorControllerName;
 }
