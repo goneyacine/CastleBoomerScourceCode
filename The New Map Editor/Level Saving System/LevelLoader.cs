@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using System.Xml.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
 using System;
@@ -13,11 +12,12 @@ public class LevelLoader : MonoBehaviour
 {
     public List<Sprite> allSprites;
     public List<AnimatorController> allControllers;
+    public Transform mainParent;
 
     public void LoadLevel(string levelName)
     {
         Level level = DeserializeLevel(levelName);
-        DeserializeGameObject(level.levelData, null);
+        DeserializeGameObject(level.levelData, mainParent);
     }
 
     public Level DeserializeLevel(string levelName)
@@ -42,6 +42,7 @@ public class LevelLoader : MonoBehaviour
     {
 
         GameObject myObject = Instantiate(new GameObject(), Vector3.zero, Quaternion.identity, parent);
+        myObject.name = serializableObject.name;
         foreach (SerializableComponent sComp in serializableObject.serializableComponents)
         {
             Type compType = sComp.componentType as Type;
@@ -140,12 +141,12 @@ public class LevelLoader : MonoBehaviour
                             vectors[x] = new Vector3(sVector.x, sVector.y);
                         }
                         pValue = vectors;
-                    }else if(loadPropertyValue.GetType() == typeof(SerializableAnimatorController))
+                    } else if (loadPropertyValue.GetType() == typeof(SerializableAnimatorController))
                     {
                         SerializableAnimatorController sControlller = (SerializableAnimatorController)loadPropertyValue;
-                        foreach(AnimatorController controller in allControllers)
+                        foreach (AnimatorController controller in allControllers)
                         {
-                            if(controller.name.Equals(sControlller.animatorControllerName))
+                            if (controller.name.Equals(sControlller.animatorControllerName))
                             {
                                 myObject.GetComponent<Animator>().runtimeAnimatorController =  controller;
                                 continue;
@@ -160,7 +161,7 @@ public class LevelLoader : MonoBehaviour
                 }
             }
         }
-        
+
         Vector3 position = new Vector3();
         position.x = serializableObject.transformData[0][0];
         position.y = serializableObject.transformData[0][1];
@@ -179,7 +180,7 @@ public class LevelLoader : MonoBehaviour
         myObject.transform.localScale = scale;
 
         foreach (SerializableGameObject child in serializableObject.childs)
-                DeserializeGameObject(child, myObject.transform);
+            DeserializeGameObject(child, myObject.transform);
     }
 }
 

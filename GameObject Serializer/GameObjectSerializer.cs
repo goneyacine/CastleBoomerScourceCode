@@ -124,7 +124,7 @@ public class GameObjectSerializer
     transformData.Add(rotation);
     transformData.Add(scale);
 
-    SerializableGameObject sObject = new SerializableGameObject(serializableComponents, transformData, childs);
+    SerializableGameObject sObject = new SerializableGameObject(targetObject.name,serializableComponents, transformData, childs);
 
     return sObject;
 

@@ -31,6 +31,11 @@ public class LevelSaver : MonoBehaviour
         stream.Close();
         Debug.Log("Level Created");
     }
+    public void OpenLevel(string levelName)
+    { 
+     currentLevelName = levelName;
+     loader.LoadLevel(levelName);
+    }
 
     public void SaveCurrentLevel(GameObject level)
     {
@@ -55,5 +60,7 @@ public class LevelSaver : MonoBehaviour
 
     //the name of the level that the player is editing
     private string currentLevelName;
+
+    public LevelLoader loader;
 
 }

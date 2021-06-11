@@ -9,16 +9,18 @@ using UnityEditor.Animations;
 [System.Serializable]
 public class SerializableGameObject
 {
-	public SerializableGameObject(List<SerializableComponent> serializableComponents, List<List<float>> transformData, List<SerializableGameObject> childs)
+	public SerializableGameObject(string name,List<SerializableComponent> serializableComponents, List<List<float>> transformData, List<SerializableGameObject> childs)
 	{
 		this.serializableComponents = serializableComponents;
 		this.transformData = transformData;
 		this.childs = childs;
+		this.name = name;
 	}
 //the transform data list contains the position rotation & scale data
 	public List<SerializableComponent> serializableComponents;
 	public List<List<float>> transformData;
 	public List<SerializableGameObject> childs;
+	public string name;
 }
 
 [System.Serializable]

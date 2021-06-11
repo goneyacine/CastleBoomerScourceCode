@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System;
 
 public class MapEditorManager : MonoBehaviour
 {
@@ -9,6 +13,12 @@ public class MapEditorManager : MonoBehaviour
       mapEditorManager = this;
     else
       Destroy(this);
+  }
+  private void Start() {
+    //I'm setting the time value to 0 so the physics will not work when the player is making a level
+    Time.timeScale = 0;
+
+    LoadLevels();
   }
   private void Update() {
     //setting the position of the transform & rotatings tools
@@ -57,6 +67,65 @@ public class MapEditorManager : MonoBehaviour
   {
     Destroy(selectedMapEditorObject.gameObject);
   }
+  public void QuitMapEditor()
+  {
+    //when the player quits the level editor we should reset the time scale to 1 so everything will work normally
+    Time.timeScale = 1;
+  }
+  /*this method is used to load the saved levels from the multiplayer levels folder, it should be called every
+  time we update the data in that folder*/
+  public void LoadLevels()
+  {
+
+    levels = new List<Level>();
+    string[] filePaths = Directory.GetFiles(Application.persistentDataPath + "/Multiplayer Levels/", "*.level");
+    BinaryFormatter formatter = new BinaryFormatter();
+
+    foreach (string path in filePaths)
+    {
+      FileStream stream = new FileStream(path, FileMode.Open);
+      levels.Add(formatter.Deserialize(stream) as Level);
+      stream.Close();
+    }
+    UpdateUI();
+  }
+  public void UpdateUI()
+  {
+      for (int i = 0; i <= 3; i++)
+      {
+        if (startingIndex + i >= levels.Count)
+        {
+          levelPanels[i].parent.SetActive(false);
+          continue;
+        }
+        else
+        {
+          levelPanels[i].parent.SetActive(true);
+          levelPanels[i].levelNameText.text = levels[i].name;
+        }
+      }
+  }
+  public void DelteLevel(int panelIndex)
+  {
+    string levelPath = Application.persistentDataPath + "/Multiplayer Levels/" + levels[startingIndex + panelIndex].name + ".level";
+    File.Delete(levelPath);
+    LoadLevels();
+    UpdateUI();
+  }
+  public void OpenLevel(int panelIndex)
+  {
+    string levelName = levels[startingIndex + panelIndex].name;
+    saver.OpenLevel(levelName);
+  }
+  public void UpdateStartingIndex(int updateValue)
+  {
+    if (startingIndex + updateValue >= 0 && startingIndex + updateValue < levels.Count)
+      startingIndex += updateValue;
+    else if (startingIndex + updateValue < 0)
+      startingIndex = 0;
+    else if (startingIndex + updateValue >= levels.Count)
+      startingIndex = levels.Count - 1;
+  }
 
   public static MapEditorManager mapEditorManager;
 //the selected map editor object
@@ -74,8 +143,20 @@ public class MapEditorManager : MonoBehaviour
   private Vector2 oldMousePosition;
 
   public Vector2 transformAxis;
+  private List<Level> levels;
 
   [Range(.001f, 500f)]
   public float transformSpeed = 1.5f;
 
+  public int startingIndex = 0;
+
+  public List<LevelPanel> levelPanels;
+  public LevelSaver saver;
+
+}
+[System.Serializable]
+public class LevelPanel
+{
+  public GameObject parent;
+  public Text levelNameText;
 }
