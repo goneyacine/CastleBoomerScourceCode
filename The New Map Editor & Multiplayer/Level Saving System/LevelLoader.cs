@@ -70,6 +70,7 @@ public class LevelLoader : MonoBehaviour
                         SerializableSprite sSprite = (SerializableSprite)loadPropertyValue;
                         foreach (Sprite sprite in allSprites)
                         {
+                            myObject.GetComponent<SpriteRenderer>().sortingOrder = 31;
                             if (sprite.name.Equals(sSprite.spriteName))
                             {
                                 myObject.GetComponent<SpriteRenderer>().sprite = sprite;

@@ -7,8 +7,9 @@ public class ItemCreateButton : MonoBehaviour
 {
 	public GameObject myObject;
 	public Vector3 spawingPosition;
+	public Transform parent;
 	public void Spawn()
 	{
-     Instantiate(myObject,spawingPosition,Quaternion.identity);
+     Instantiate(myObject,spawingPosition,Quaternion.identity,parent);
 	}
 }

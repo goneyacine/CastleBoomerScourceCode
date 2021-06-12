@@ -16,7 +16,7 @@ public class MapEditorManager : MonoBehaviour
   }
   private void Start() {
     //I'm setting the time value to 0 so the physics will not work when the player is making a level
-    Time.timeScale = 0;
+    Time.timeScale = 1;
 
     LoadLevels();
   }
