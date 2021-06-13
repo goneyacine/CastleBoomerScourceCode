@@ -24,29 +24,30 @@ public class Authentication : MonoBehaviour
 	public GameObject loginMainPanel;
 
 	public static string SessionTicket;
+
 	private void Awake()
 	{
 		if (!File.Exists(Application.persistentDataPath + "/AuthenticationData.authentication"))
 		{
 			loginMainPanel.SetActive(true);
-		}else 
+		} else
 		{
-         BinaryFormatter formatter = new BinaryFormatter();
-		string path = Application.persistentDataPath + "/AuthenticationData.authentication";
-		FileStream stream = new FileStream(path, FileMode.Create);
-		PlayerAuthenticationData playerAuthenticationData = formatter.Deserialize(stream) as PlayerAuthenticationData;
-		stream.Close();
-        PlayFabClientAPI.LoginWithPlayFab(new LoginWithPlayFabRequest
-		{
-			Username = playerAuthenticationData.userName,
-			Password = playerAuthenticationData.password
-		}, result =>
-		{
-			SessionTicket = result.SessionTicket;
-		}, error =>
-		{
-			 Debug.Log(error.GenerateErrorReport());
-		});
+			BinaryFormatter formatter = new BinaryFormatter();
+			string path = Application.persistentDataPath + "/AuthenticationData.authentication";
+			FileStream stream = new FileStream(path, FileMode.Create);
+			PlayerAuthenticationData playerAuthenticationData = formatter.Deserialize(stream) as PlayerAuthenticationData;
+			stream.Close();
+			PlayFabClientAPI.LoginWithPlayFab(new LoginWithPlayFabRequest
+			{
+				Username = playerAuthenticationData.userName,
+				Password = playerAuthenticationData.password
+			}, result =>
+			{
+				SessionTicket = result.SessionTicket;
+			}, error =>
+			{
+				Debug.Log(error.GenerateErrorReport());
+			});
 		}
 
 	}
