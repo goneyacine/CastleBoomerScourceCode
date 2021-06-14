@@ -23,6 +23,8 @@ public class Authentication : MonoBehaviour
 	public GameObject signUpMainPanel;
 	public GameObject loginMainPanel;
 
+	public string id;
+
 	public static string SessionTicket;
 
 	private void Awake()
@@ -34,7 +36,7 @@ public class Authentication : MonoBehaviour
 		{
 			BinaryFormatter formatter = new BinaryFormatter();
 			string path = Application.persistentDataPath + "/AuthenticationData.authentication";
-			FileStream stream = new FileStream(path, FileMode.Create);
+			FileStream stream = new FileStream(path, FileMode.Open);
 			PlayerAuthenticationData playerAuthenticationData = formatter.Deserialize(stream) as PlayerAuthenticationData;
 			stream.Close();
 			PlayFabClientAPI.LoginWithPlayFab(new LoginWithPlayFabRequest
@@ -44,6 +46,7 @@ public class Authentication : MonoBehaviour
 			}, result =>
 			{
 				SessionTicket = result.SessionTicket;
+				id = result.EntityToken.Entity.Id;
 			}, error =>
 			{
 				Debug.Log(error.GenerateErrorReport());
@@ -77,6 +80,7 @@ public class Authentication : MonoBehaviour
 		}, result =>
 		{
 			SessionTicket = result.SessionTicket;
+			id = result.EntityToken.Entity.Id;
 			loginMainPanel.SetActive(false);
 			RememberUser(loginUserNameInputField.text, loginPasswordInputField.text);
 		}, error =>

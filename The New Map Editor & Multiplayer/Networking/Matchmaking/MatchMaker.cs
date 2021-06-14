@@ -31,12 +31,12 @@ public class MatchMaker : MonoBehaviour
 			{
 				Entity = new EntityKey
 				{
-					Id = playerID,
-					Type = "",
+					Id = authentication.id,
+					Type = "title_player_account",
 				},
 				Attributes = new MatchmakingPlayerAttributes
 				{
-					DataObject = new { }
+					DataObject = new { IP = playerID }
 				}
 			},
 
@@ -81,6 +81,7 @@ public class MatchMaker : MonoBehaviour
 
 	private void OnMatchmakingError(PlayFabError error)
 	{
+		queueStatusText.text = error.GenerateErrorReport();
 		Debug.LogError(error.GenerateErrorReport());
 	}
 
@@ -128,7 +129,8 @@ public class MatchMaker : MonoBehaviour
 		    new GetMatchRequest
 		{
 			MatchId = matchId,
-			QueueName = queueName
+			QueueName = queueName,
+			ReturnMemberAttributes = true
 		},
 		OnGetMatch,
 		OnMatchmakingError
@@ -138,7 +140,9 @@ public class MatchMaker : MonoBehaviour
 	private void OnGetMatch(GetMatchResult result)
 	{
 		//storing the players IDs on the PlayersIDSaver two join them
-		idSaver.ManageIDs(result.Members[0].Entity.Id, result.Members[1].Entity.Id);
+		object[] p1 = (object[])result.Members[0].Attributes.DataObject;
+		object[] p2 = (object[])result.Members[1].Attributes.DataObject; 
+		idSaver.ManageIDs(p1[0] as string, p2[0] as string);
 		SceneManager.LoadScene(multiplayerSceneName);
 	}
 	public string playerID;
@@ -152,4 +156,5 @@ public class MatchMaker : MonoBehaviour
 	private string ticketId;
 	public GameObject randomMatchMakingPanel;
 	public GameObject mainPanel;
+	public Authentication authentication;
 }
