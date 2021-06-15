@@ -3,8 +3,6 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using UnityEditor.Animations;
 
 [System.Serializable]
 public class SerializableGameObject
@@ -171,7 +169,7 @@ public class Serializable4x4Matrix
 [System.Serializable]
 public class SerializableAnimatorController
 {
-	public SerializableAnimatorController(AnimatorController animatorController)
+	public SerializableAnimatorController(RuntimeAnimatorController animatorController)
 	{
 		this.animatorControllerName = animatorController.name;
 	}

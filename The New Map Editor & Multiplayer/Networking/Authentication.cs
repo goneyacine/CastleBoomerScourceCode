@@ -60,7 +60,7 @@ public class Authentication : MonoBehaviour
 		{
 			Username = signUpUserNameInputField.text,
 			Email = signUpEmailInputField.text,
-			Password = loginPasswordInputField.text
+			Password = signUpPasswordInputField.text
 		}, result =>
 		{
 			SessionTicket = result.SessionTicket;

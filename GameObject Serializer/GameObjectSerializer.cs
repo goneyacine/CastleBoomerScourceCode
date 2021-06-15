@@ -6,8 +6,6 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using UnityEditor;
-using UnityEditor.Animations;
 
 public class GameObjectSerializer
 {
@@ -72,8 +70,8 @@ public class GameObjectSerializer
               vectors[i] = new SerializableVector3(data[i]);
 
             pValue = vectors;
-          }else if(pValue.GetType() == typeof(AnimatorController))
-           pValue = new SerializableAnimatorController((AnimatorController)pValue);
+          }else if(pValue.GetType() == typeof(RuntimeAnimatorController))
+           pValue = new SerializableAnimatorController((RuntimeAnimatorController)pValue);
           else if (!(pValue.GetType().IsSerializable) || !(pValue.GetType().IsArray && pValue.GetType().GetElementType().IsSerializable))
             continue;
 

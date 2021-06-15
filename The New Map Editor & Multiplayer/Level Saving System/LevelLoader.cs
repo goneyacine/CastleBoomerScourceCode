@@ -5,13 +5,11 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
 using System;
-using UnityEditor;
-using UnityEditor.Animations;
 
 public class LevelLoader : MonoBehaviour
 {
     public List<Sprite> allSprites;
-    public List<AnimatorController> allControllers;
+    public List<RuntimeAnimatorController> allControllers;
     public Transform mainParent;
 
     public void LoadLevel(string levelName)
@@ -145,7 +143,7 @@ public class LevelLoader : MonoBehaviour
                     } else if (loadPropertyValue.GetType() == typeof(SerializableAnimatorController))
                     {
                         SerializableAnimatorController sControlller = (SerializableAnimatorController)loadPropertyValue;
-                        foreach (AnimatorController controller in allControllers)
+                        foreach (RuntimeAnimatorController controller in allControllers)
                         {
                             if (controller.name.Equals(sControlller.animatorControllerName))
                             {
