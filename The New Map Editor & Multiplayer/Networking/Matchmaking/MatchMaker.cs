@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Net;
+using Newtonsoft.Json;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 
 public class MatchMaker : MonoBehaviour
 {
@@ -23,7 +26,7 @@ public class MatchMaker : MonoBehaviour
 		queueStatusText.text = "Searching For Player...";
 		randomMatchMakingPanel.SetActive(true);
 		mainPanel.SetActive(false);
-      
+
 		PlayFabMultiplayerAPI.CreateMatchmakingTicket(
 		    new CreateMatchmakingTicketRequest
 		{
@@ -139,10 +142,11 @@ public class MatchMaker : MonoBehaviour
 
 	private void OnGetMatch(GetMatchResult result)
 	{
+		
 		//storing the players IDs on the PlayersIDSaver two join them
-		object[] p1 = (object[])result.Members[0].Attributes.DataObject;
-		object[] p2 = (object[])result.Members[1].Attributes.DataObject; 
-		idSaver.ManageIDs(p1[0] as string, p2[0] as string);
+		JArray p1 = result.Members[0].Attributes.DataObject as JArray;
+		JArray p2 = result.Members[1].Attributes.DataObject as JArray;
+		idSaver.ManageIDs((string)p1[0].Value<object>(),(string)p2[0].Value<object>());
 		SceneManager.LoadScene(multiplayerSceneName);
 	}
 	public string playerID;
@@ -157,4 +161,9 @@ public class MatchMaker : MonoBehaviour
 	public GameObject randomMatchMakingPanel;
 	public GameObject mainPanel;
 	public Authentication authentication;
+}
+public class MyDataObject
+{
+ public string name;
+ public string myValue;
 }

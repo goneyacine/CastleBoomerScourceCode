@@ -16,6 +16,9 @@ public class BlackHoleBullet : MonoBehaviour
  	currentFrame--;
  }
  private void OnTriggerStay2D(Collider2D collider){
+   if(collider.tag == "DontDestroy"  || collider.tag ==  "Bullet")
+     return;
+     
  if(currentFrame <= 0){
  	if(Vector2.Distance(transform.position,collider.transform.position) <= 3)
  	Destroy(collider.gameObject);
