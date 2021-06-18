@@ -7,9 +7,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Net;
-using Newtonsoft.Json;
-using System.Linq;
-using Newtonsoft.Json.Linq;
 
 public class MatchMaker : MonoBehaviour
 {
@@ -142,11 +139,25 @@ public class MatchMaker : MonoBehaviour
 
 	private void OnGetMatch(GetMatchResult result)
 	{
-		
 		//storing the players IDs on the PlayersIDSaver two join them
-		JArray p1 = result.Members[0].Attributes.DataObject as JArray;
-		JArray p2 = result.Members[1].Attributes.DataObject as JArray;
-		idSaver.ManageIDs((string)p1[0].Value<object>(),(string)p2[0].Value<object>());
+		string p1 = result.Members[0].Attributes.DataObject.ToString();
+		string p2 = result.Members[1].Attributes.DataObject.ToString();
+		Debug.Log("..." + p1);
+		Debug.Log("..." + p2);
+		string p1ID = "";
+		string p2ID = "";
+		//reading the id of the two players
+		for (int i = 7; i < p1.Length - 2; i++)
+		{
+			p1ID += p1[i];
+		}
+		for (int i = 7; i < p2.Length - 2; i++)
+		{
+			p2ID += p2[i];
+		}
+		Debug.Log(p1ID);
+		Debug.Log(p2ID);
+		idSaver.ManageIDs(p1ID, p2ID);
 		SceneManager.LoadScene(multiplayerSceneName);
 	}
 	public string playerID;
@@ -164,6 +175,6 @@ public class MatchMaker : MonoBehaviour
 }
 public class MyDataObject
 {
- public string name;
- public string myValue;
+	public string name;
+	public string myValue;
 }
