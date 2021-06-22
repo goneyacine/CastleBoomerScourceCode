@@ -9,7 +9,7 @@ public class PlayersIDSaver : MonoBehaviour
 {
 	public void ManageIDs(string player1ID, string player2ID)
 	{
-		if (player1ID.Equals(myID))
+		if (player1ID == myID)
 		{
 			isHost = true;
 			otherPlayerID = player2ID;

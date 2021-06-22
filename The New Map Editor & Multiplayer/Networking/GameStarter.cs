@@ -7,19 +7,19 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class GameStarter : MonoBehaviour
 {
-	public void Awake()
+	public void Start()
 	{
 		if (starter == null)
 			starter = this;
 		else
 			Destroy(gameObject);
+        selectedLevelData = PlayerPrefs.GetString("selectedLevelData");
 		networkManager.id = PlayerPrefs.GetString("otherPlayerID");
 		if (PlayerPrefs.GetInt("isHost") == 0)
 			networkManager.StartHost();
 		else
 			networkManager.Join();
 
-		selectedLevelData = PlayerPrefs.GetString("selectedLevelData");
 	}
 	public void LoadLevel(string levelData)
 	{

@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Events;
 using System;
+using EZCameraShake;
 public class BulletManager : MonoBehaviour
 {
     public Bullet bullet;
@@ -38,6 +39,7 @@ public class BulletManager : MonoBehaviour
     }
     private void OnDestroy()
     {
+        CameraShaker.Instance.ShakeOnce(3f,3f, .1f, 1f);
         try
         {
             FindObjectOfType<SoundManager>().Play("bullet");

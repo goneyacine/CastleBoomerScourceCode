@@ -1,39 +1,41 @@
 using UnityEngine;
 using System.Collections;
-
+using EZCameraShake;
+using System.Collections.Generic;
+using System;
 public class BasicShooting : Shoot
 {
     private bool mouseIsTouchingUI = false;
     private float VelocityMultiplyer = .5f;
     private float finalVelocityMultiplyer = 1f;
-     private string controlMode = "Mouse";
-    private void Start(){
-    controlMode = DataSerialization.GetObject("ControlMode") as string;
+    private string controlMode = "Mouse";
+    private void Start() {
+        controlMode = DataSerialization.GetObject("ControlMode") as string;
     }
-    public override void MoreShootingDistance(float value){
-    controlMode = DataSerialization.GetObject("ControlMode") as string;
-            VelocityMultiplyer += value;
-            if(VelocityMultiplyer > 1f)
+    public override void MoreShootingDistance(float value) {
+        controlMode = DataSerialization.GetObject("ControlMode") as string;
+        VelocityMultiplyer += value;
+        if (VelocityMultiplyer > 1f)
             VelocityMultiplyer = 1f;
-            else if (VelocityMultiplyer < 0f)
+        else if (VelocityMultiplyer < 0f)
             VelocityMultiplyer = 0f;
         //set the final velocity of the bullet
         finalVelocity = (bullet.velocity + cannonShooter.velocityBoost) * VelocityMultiplyer;
     }
-    public override void LessShootingDistance(float value){
-    controlMode = DataSerialization.GetObject("ControlMode") as string;
-            VelocityMultiplyer -= value;
-            if(VelocityMultiplyer > 1f)
+    public override void LessShootingDistance(float value) {
+        controlMode = DataSerialization.GetObject("ControlMode") as string;
+        VelocityMultiplyer -= value;
+        if (VelocityMultiplyer > 1f)
             VelocityMultiplyer = 1f;
-            else if (VelocityMultiplyer < 0f)
+        else if (VelocityMultiplyer < 0f)
             VelocityMultiplyer = 0f;
         finalVelocity = (bullet.velocity + cannonShooter.velocityBoost) * VelocityMultiplyer;
     }
-   public override void ShootMethod()
+    public override void ShootMethod()
     {
-    controlMode = DataSerialization.GetObject("ControlMode") as string;
-        if((Input.GetMouseButton(0) && controlMode == "Mouse"))
-        VelocityMultiplyer += Input.GetAxis("Mouse X") * mouseSensetvity;
+        controlMode = DataSerialization.GetObject("ControlMode") as string;
+        if ((Input.GetMouseButton(0) && controlMode == "Mouse"))
+            VelocityMultiplyer += Input.GetAxis("Mouse X") * mouseSensetvity;
 
         if (VelocityMultiplyer > 1)
             VelocityMultiplyer = 1;
@@ -48,36 +50,47 @@ public class BasicShooting : Shoot
         GameObject[] UIElements = GameObject.FindGameObjectsWithTag("UI");
         mouseIsTouchingUI = false;
         //check if the mouse is touching any UI element
-        if(controlMode == "Mouse")
-        for(int i = 0; i < UIElements.Length;i++)
-        {
-            if(UIElements[i].GetComponent<UIElementOnPointerEnter>().mouseEntered)
+        if (controlMode == "Mouse")
+            for (int i = 0; i < UIElements.Length; i++)
             {
-                mouseIsTouchingUI = true;
-                break;
+                if (UIElements[i].GetComponent<UIElementOnPointerEnter>().mouseEntered)
+                {
+                    mouseIsTouchingUI = true;
+                    break;
+                }
+                else
+                {
+                    mouseIsTouchingUI = false;
+                }
             }
-            else
-            {
-                mouseIsTouchingUI = false;
-            }
-        }
         //Debug.Log(mouseIsTouchingUI);
         //set the final velocity of the bullet
         finalVelocity = (bullet.velocity + cannonShooter.velocityBoost) * VelocityMultiplyer * finalVelocityMultiplyer;
         //shoot a bullet when the player release the mouse button
         CannonHeadBulletsManager cannonHeadBulletsManager = cannonHeadManager.gameObject.GetComponent<CannonHeadBulletsManager>();
 
-        if (((Input.GetMouseButtonUp(0) && controlMode == "Mouse" && (!mouseIsTouchingUI && Camera.main.ScreenToWorldPoint(Input.mousePosition).x >= cannonHeadManager.gameObject.transform.position.x)) || (controlMode == "Keyboard" || controlMode == "Touche" )) && cannonHeadBulletsManager.bulletsNumbers[cannonHeadBulletsManager.bullets.IndexOf(bullet)] > 0 ) 
+        if (((Input.GetMouseButtonUp(0) && controlMode == "Mouse" && (!mouseIsTouchingUI && Camera.main.ScreenToWorldPoint(Input.mousePosition).x >= cannonHeadManager.gameObject.transform.position.x)) || (controlMode == "Keyboard" || controlMode == "Touche" )) && cannonHeadBulletsManager.bulletsNumbers[cannonHeadBulletsManager.bullets.IndexOf(bullet)] > 0 )
         {
+
+            GameObject.Find("Cannon").GetComponent<Animator>().SetBool("Shoot", true);
+            CameraShaker.Instance.ShakeOnce(6f, 6f, .2f, 1.5f);
+            try {
+                FindObjectOfType<SoundManager>().Play("cannon shoot");
+            } catch (Exception e) {
+                Debug.LogWarning("Can't Play Cannon Shoot Sound");
+            }
             //create bullet object
             GameObject newBullet = Instantiate(bulletPrefab, cannonHeadManager.transform.Find("Cannon Shooter").Find("Shooting Point").transform.position, Quaternion.identity);
+            GameObject newCannonShootingEffect = Instantiate(cannonShootingEffect, cannonHeadManager.transform.Find("Cannon Shooter").Find("Shooting Point").transform.position, Quaternion.identity);
+            newCannonShootingEffect.transform.eulerAngles =  cannonHeadManager.transform.eulerAngles;
+            Destroy(newCannonShootingEffect, 10f);
             newBullet.GetComponent<BulletManager>().bullet = bullet;
             //add speed to the bullet
-            newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos((cannonHeadManager.transform.localEulerAngles.z-90) * Mathf.Deg2Rad),
-                Mathf.Sin((cannonHeadManager.transform.localEulerAngles.z -90) * Mathf.Deg2Rad)) * finalVelocity;
+            newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos((cannonHeadManager.transform.localEulerAngles.z - 90) * Mathf.Deg2Rad),
+                    Mathf.Sin((cannonHeadManager.transform.localEulerAngles.z - 90) * Mathf.Deg2Rad)) * finalVelocity;
             cannonHeadBulletsManager.bulletsNumbers[cannonHeadBulletsManager.bullets.IndexOf(bullet)]--;
 
         }
     }
-   
+
 }

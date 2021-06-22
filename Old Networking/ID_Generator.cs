@@ -3,15 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Net;
 using UnityEngine.UI;
+using System.IO;
 
-    
-    public class ID_Generator : MonoBehaviour
-    {
+public class ID_Generator : MonoBehaviour
+{
     private void OnEnable()
     {
-        string hostName = Dns.GetHostName();
-        string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
-        string id = IP_to_ID(ip);
+        string address = "";
+        WebRequest request = WebRequest.Create("http://checkip.dyndns.org/");
+        using (WebResponse response = request.GetResponse())
+        using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+        {
+            address = stream.ReadToEnd();
+        }
+
+        int first = address.IndexOf("Address: ") + 9;
+        int last = address.LastIndexOf("</body>");
+        address = address.Substring(first, last - first);
+        string id = IP_to_ID(address);
         id_Text.text = "Your ID : " + id;
     }
     //from id to an ip adress
@@ -19,53 +28,53 @@ using UnityEngine.UI;
     {
         if (id == null || id == "") { return null; }
         string ip = "";
-        for(int i = 0; i < id.Length; i++)
+        for (int i = 0; i < id.Length; i++)
         {
             char c = id[i];
             char newChar  = '1';
             switch (c)
             {
-                case '.':
+            case '.':
                 newChar = '0';
                 break;
-                case 'A':
-                    newChar = '1';
-                    break;
+            case 'A':
+                newChar = '1';
+                break;
 
-                case 'Q':
-                    newChar = '2';
-                    break;
+            case 'Q':
+                newChar = '2';
+                break;
 
-                case 'x':
-                    newChar = '3';
-                    break;
+            case 'x':
+                newChar = '3';
+                break;
 
-                case '3':
-                    newChar = '4';
-                    break;
+            case '3':
+                newChar = '4';
+                break;
 
-                case 'm':
-                    newChar = '5';
-                    break;
-                case 'e':
-                    newChar = '6';
-                    break;
+            case 'm':
+                newChar = '5';
+                break;
+            case 'e':
+                newChar = '6';
+                break;
 
-                case '_':
-                    newChar = '7';
-                    break;
+            case '_':
+                newChar = '7';
+                break;
 
-                case 'i':
-                    newChar = '8';
-                    break;
+            case 'i':
+                newChar = '8';
+                break;
 
-                case '7':
-                    newChar = '9';
-                    break;
+            case '7':
+                newChar = '9';
+                break;
 
-                case '9':
-                    newChar = '.';
-                    break;
+            case '9':
+                newChar = '.';
+                break;
             }
             ip = ip + newChar;
         }
@@ -83,52 +92,52 @@ using UnityEngine.UI;
             char newChar = 'A';
             switch (c)
             {
-                case '0':
+            case '0':
                 newChar = '.';
                 break;
-                case '1':
-                    newChar = 'A';
-                    break;
+            case '1':
+                newChar = 'A';
+                break;
 
-                case '2':
-                    newChar = 'Q';
-                    break;
+            case '2':
+                newChar = 'Q';
+                break;
 
-                case '3':
-                    newChar = 'x';
-                    break;
+            case '3':
+                newChar = 'x';
+                break;
 
-                case '4':
-                    newChar = '3';
-                    break;
+            case '4':
+                newChar = '3';
+                break;
 
-                case '5':
-                    newChar = 'm';
-                    break;
-                case '6':
-                    newChar = 'e';
-                    break;
+            case '5':
+                newChar = 'm';
+                break;
+            case '6':
+                newChar = 'e';
+                break;
 
-                case '7':
-                    newChar = '_';
-                    break;
+            case '7':
+                newChar = '_';
+                break;
 
-                case '8':
-                    newChar = 'i';
-                    break;
+            case '8':
+                newChar = 'i';
+                break;
 
-                case '9':
-                    newChar = '7';
-                    break;
+            case '9':
+                newChar = '7';
+                break;
 
-                case '.':
-                    newChar = '9';
-                    break;
+            case '.':
+                newChar = '9';
+                break;
             }
             id = id + newChar;
         }
         return id;
     }
     public Text id_Text;
-    public string id; 
+    public string id;
 }

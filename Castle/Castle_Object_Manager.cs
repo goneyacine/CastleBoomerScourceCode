@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using EZCameraShake;
 [ExecuteInEditMode]
 public class Castle_Object_Manager : MonoBehaviour
 {
@@ -80,18 +81,7 @@ public class Castle_Object_Manager : MonoBehaviour
     }
     //the die method
     private void Die()
-    {
-        try
-        {
-            FindObjectOfType<SoundManager>().Play("hit");
-        }catch(Exception e) { }
-        dieEvent.Invoke();
-        //create die effects
-        if(castle_Object.dieEffect != null)
-        {
-            GameObject dieEffect = Instantiate(castle_Object.dieEffect, transform.position, castle_Object.dieEffect.transform.rotation);
-            Destroy(dieEffect, 5f);
-        }
+    { 
         Destroy(gameObject);
     }
    
@@ -99,7 +89,18 @@ public class Castle_Object_Manager : MonoBehaviour
     {
         try
         {
+            FindObjectOfType<SoundManager>().Play("hit");
+        }catch(Exception e) { }
+        dieEvent.Invoke(); 
+    	if(castle_Object.dieEffect != null)
+        {
+            GameObject dieEffect = Instantiate(castle_Object.dieEffect, transform.position, castle_Object.dieEffect.transform.rotation);
+            Destroy(dieEffect, 8f);
+        }
+        try
+        {
             FindObjectOfType<Castle_Manager>().UpdateData();
+            CameraShaker.Instance.ShakeOnce(6f,6f, .2f, 1.5f);
         }catch(Exception e) { }
     }
 }

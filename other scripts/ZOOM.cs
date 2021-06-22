@@ -6,6 +6,7 @@ public class ZOOM : MonoBehaviour
 {
     public List<ZoomingData> zoomingData;
     public int targetZoomingDataIndex = 1;
+    public Camera cam;
     private void Start()
     {
         UpdateData();
@@ -20,7 +21,7 @@ public class ZOOM : MonoBehaviour
     {
         try
         {
-            gameObject.GetComponent<Camera>().orthographicSize = zoomingData[targetZoomingDataIndex].camSize;
+            cam.orthographicSize = zoomingData[targetZoomingDataIndex].camSize;
             transform.position = new Vector3(transform.position.x, zoomingData[targetZoomingDataIndex].position.y, transform.position.z);
         }
         catch (Exception e)

@@ -9,6 +9,7 @@ public class ShootingManager : MonoBehaviour
     public int selectedBulletRole = 0;
     public Bullet selectedBullet;
     public GameObject bulletPrefab;
+    public GameObject cannonShootingEffect;
     public CannonShooterManager cannonShooterManager;
     public float mouseSensetvity = .2f;
      private string controlMode = "Mouse";
@@ -28,6 +29,7 @@ public class ShootingManager : MonoBehaviour
         shoot.bullet = selectedBullet;
         shoot.cannonShooter = cannonShooterManager.cannonShooter;
         shoot.bulletPrefab = bulletPrefab;
+        shoot.cannonShootingEffect = cannonShootingEffect;
         shoot.mouseSensetvity = mouseSensetvity;
 
     }

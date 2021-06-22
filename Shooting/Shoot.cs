@@ -5,6 +5,7 @@ public abstract class Shoot : MonoBehaviour
     public CannonHeadManager cannonHeadManager;
     public CannonShooter cannonShooter;
     public GameObject bulletPrefab;
+    public GameObject cannonShootingEffect;
     public float mouseSensetvity;
     public float finalVelocity;
     public abstract void ShootMethod();

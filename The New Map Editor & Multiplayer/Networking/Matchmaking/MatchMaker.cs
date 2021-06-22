@@ -102,7 +102,6 @@ public class MatchMaker : MonoBehaviour
 			yield return new WaitForSeconds(6);
 		}
 	}
-
 	private void OnGetMatchMakingTicket(GetMatchmakingTicketResult result)
 	{
 		queueStatusText.text = $"Status: {result.Status}";
@@ -139,6 +138,7 @@ public class MatchMaker : MonoBehaviour
 
 	private void OnGetMatch(GetMatchResult result)
 	{
+		
 		//storing the players IDs on the PlayersIDSaver two join them
 		string p1 = result.Members[0].Attributes.DataObject.ToString();
 		string p2 = result.Members[1].Attributes.DataObject.ToString();
@@ -158,7 +158,7 @@ public class MatchMaker : MonoBehaviour
 		Debug.Log(p1ID);
 		Debug.Log(p2ID);
 		idSaver.ManageIDs(p1ID, p2ID);
-		SceneManager.LoadScene(multiplayerSceneName);
+		SceneManager.LoadScene(multiplayerSceneName); 
 	}
 	public string playerID;
 	public string queueName = "1V1CastleBoomer";
