@@ -7,13 +7,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class GameStarter : MonoBehaviour
 {
-	public void Start()
+	public void OnEnable()
 	{
 		if (starter == null)
 			starter = this;
-		else
+		else if (starter != this && starter != null)
 			Destroy(gameObject);
-        selectedLevelData = PlayerPrefs.GetString("selectedLevelData");
+        
 		networkManager.id = PlayerPrefs.GetString("otherPlayerID");
 		if (PlayerPrefs.GetInt("isHost") == 0)
 			networkManager.StartHost();
@@ -21,19 +21,8 @@ public class GameStarter : MonoBehaviour
 			networkManager.Join();
 
 	}
-	public void LoadLevel(string levelData)
-	{
-		FileStream file = new FileStream(Application.persistentDataPath + "level.level",FileMode.Create);
-		StreamWriter writer = new StreamWriter(file);
-		writer.Write(levelData);
-		writer.Close();
-		BinaryFormatter formatter = new BinaryFormatter();
-		Level level = formatter.Deserialize(file) as Level;
-		levelLoader.DeserializeGameObject(level.levelData, levelMainParent);
-	}
 	public Transform levelMainParent;
 	public LevelLoader levelLoader;
 	public static GameStarter starter;
-	public string selectedLevelData;
 	public MyNetworkManager networkManager;
 }

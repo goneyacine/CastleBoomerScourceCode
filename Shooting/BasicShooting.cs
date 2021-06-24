@@ -81,9 +81,6 @@ public class BasicShooting : Shoot
             }
             //create bullet object
             GameObject newBullet = Instantiate(bulletPrefab, cannonHeadManager.transform.Find("Cannon Shooter").Find("Shooting Point").transform.position, Quaternion.identity);
-            GameObject newCannonShootingEffect = Instantiate(cannonShootingEffect, cannonHeadManager.transform.Find("Cannon Shooter").Find("Shooting Point").transform.position, Quaternion.identity);
-            newCannonShootingEffect.transform.eulerAngles =  cannonHeadManager.transform.eulerAngles;
-            Destroy(newCannonShootingEffect, 10f);
             newBullet.GetComponent<BulletManager>().bullet = bullet;
             //add speed to the bullet
             newBullet.GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos((cannonHeadManager.transform.localEulerAngles.z - 90) * Mathf.Deg2Rad),

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Net;
-
+using EasyFileTransfer;
 public class MatchMaker : MonoBehaviour
 {
 	private void Start()
@@ -16,6 +16,10 @@ public class MatchMaker : MonoBehaviour
 		string hostName = Dns.GetHostName();
 		string ip = Dns.GetHostByName(hostName).AddressList[0].ToString();
 		playerID = ID_Generator.IP_to_ID(ip);
+		// reciving the other player level data
+		EftServer server = new EftServer(Application.persistentDataPath + "/", 9999);
+		System.Threading.Thread thread = new System.Threading.Thread(server.StartServer);
+		thread.Start();
 	}
 	public void StartMatchmaking()
 	{
@@ -158,7 +162,11 @@ public class MatchMaker : MonoBehaviour
 		Debug.Log(p1ID);
 		Debug.Log(p2ID);
 		idSaver.ManageIDs(p1ID, p2ID);
-		SceneManager.LoadScene(multiplayerSceneName); 
+		//sending my selected level data to the other player
+		EftClient.Send(Application.persistentDataPath + "/Multiplayer Levels/" + PlayerPrefs.GetString("selectedLevelName") + ".level",
+		ID_Generator.ID_to_IP(PlayerPrefs.GetString("otherPlayerID")), 9999);
+		matchmakingObjects.SetActive(false);
+		gameplayObjects.SetActive(true); 
 	}
 	public string playerID;
 	public string queueName = "1V1CastleBoomer";
@@ -172,9 +180,6 @@ public class MatchMaker : MonoBehaviour
 	public GameObject randomMatchMakingPanel;
 	public GameObject mainPanel;
 	public Authentication authentication;
-}
-public class MyDataObject
-{
-	public string name;
-	public string myValue;
+	public GameObject matchmakingObjects;
+	public GameObject gameplayObjects;
 }

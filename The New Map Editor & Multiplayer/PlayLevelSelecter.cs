@@ -22,14 +22,7 @@ public class PlayLevelSelecter : MonoBehaviour
 	public void Select(int index)
 	{
 		Level targetLevel = levels[index + startingIndex];
-		FileStream file = new FileStream(Application.persistentDataPath + "/Multiplayer Levels" + "/" +  targetLevel.name + ".level", FileMode.Open);
-		StreamReader reader = new StreamReader(file);
-		string ln;
-		string levelData = "";
-		while ((ln = reader.ReadLine()) != null) {
-		   levelData += ln;
-		}
-		PlayerPrefs.SetString("selectedLevelData", levelData);
+		PlayerPrefs.SetString("selectedLevelName", targetLevel.name);
 	}
 	public void ReloadUI()
 	{
